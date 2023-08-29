@@ -8,6 +8,8 @@ import typer
 from .database import app as database_app
 from .contexts import app as contexts_app
 
+from .config import ConfigManager
+
 
 def main() -> None:
     """Entry point for the CLI script.
@@ -15,14 +17,16 @@ def main() -> None:
     Defines the commands for the CLI script and makes sure the correct
     functions get called when running a specific CLI command.
     """
-    app = typer.Typer(no_args_is_help=True)
+    # app = typer.Typer(no_args_is_help=True)
 
-    # Add subcommand's
-    app.add_typer(database_app, name='database', help='Database management')
-    app.add_typer(contexts_app, name='contexts', help='Context management')
+    # # Add subcommand's
+    # app.add_typer(database_app, name='database', help='Database management')
+    # app.add_typer(contexts_app, name='contexts', help='Context management')
 
-    # Run the Typer app
-    app()
+    # # Run the Typer app
+    # app()
+    cfg = ConfigManager('/home/vscode/test_file.yaml')
+    cfg.load()
 
 
 if __name__ == '__main__':
