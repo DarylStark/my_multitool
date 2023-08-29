@@ -66,16 +66,23 @@ class ConfigManager:
     YAML configfile.
     """
 
-    def __init__(self, yaml_file: str, create: bool = True) -> None:
-        """Initiator saves the default values.
+    def __init__(self) -> None:
+        """Initiator sets default values.
+
+        Sets the default values for the internal variables.
+        """
+        self.yaml_file: str | None = None
+        self.config: ConfigModel | None = None
+
+    def configure(self, yaml_file: str) -> None:
+        """Configure the config-object.
+
+        Set the configurationvalues for the config object.
 
         Args:
             yaml_file: the filename for the YAML file.
-            create: determines if the file has to be created if it does not
-                exist.
         """
         self.yaml_file = expanduser(yaml_file)
-        self.config: ConfigModel | None = None
 
     def load(self) -> None:
         """Load the configuration from the file.
@@ -86,10 +93,13 @@ class ConfigManager:
 
         Raises:
             ConfigFileNotFoundException: when the given configfile is not
-                found.
+                found or not entered.
             ConfigFileNotValidException: when the given configfile is not
                 correct.
         """
+        if not self.yaml_file:
+            raise ConfigFileNotFoundException
+
         try:
             with open(self.yaml_file, 'r') as input_file:
                 content = yaml.safe_load(input_file)
@@ -110,7 +120,7 @@ class ConfigManager:
         Raises:
             NoConfigToSaveException: when the config is not set yet.
         """
-        if self.config:
+        if self.config and self.yaml_file:
             with open(self.yaml_file, 'w') as output_file:
                 yaml.dump(self.config.dict(), output_file)
         else:

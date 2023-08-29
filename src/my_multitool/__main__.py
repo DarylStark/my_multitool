@@ -14,6 +14,7 @@ from .contexts import app as contexts_app
 from .database import app as database_app
 from .exceptions import (ConfigFileNotFoundException,
                          ConfigFileNotValidException)
+from .globals import config
 
 
 def main() -> None:
@@ -31,14 +32,14 @@ def main() -> None:
     logger = logging.getLogger('MAIN')
 
     # Load the configurationfile
-    cfg = ConfigManager('~/.my_multitool_config.yaml')
+    config.configure('~/.my_multitool_config.yaml')
     try:
-        cfg.load()
+        config.load()
     except ConfigFileNotFoundException:
-        logging.warning(
+        logger.warning(
             'Configurationfile did not exist. Creating default configuration.')
-        cfg.set_default_config()
-        cfg.save()
+        config.set_default_config()
+        config.save()
     except ConfigFileNotValidException:
         logging.error('Configurationfile not valid')
         sys.exit(1)
