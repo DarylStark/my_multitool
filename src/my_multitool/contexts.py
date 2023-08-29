@@ -8,6 +8,7 @@ appropiate for the work you have to do.
 """
 
 import typer
+from .globals import config
 
 app = typer.Typer(no_args_is_help=True)
 
@@ -18,6 +19,12 @@ def lst() -> None:
 
     Lists all configured contexts.
     """
+    contexts = config.contexts
+    if contexts:
+        for context in contexts:
+            print(context)
+    else:
+        print('No contexts set')
 
 
 @app.command(name='create')

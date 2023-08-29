@@ -9,7 +9,20 @@
             "type": "python",
             "request": "launch",
             "module": "my_multitool",
-            "justMyCode": true
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/src"
+        },
+        {
+            "name": "Debug CLI script - Contexts - List",
+            "type": "python",
+            "request": "launch",
+            "module": "my_multitool",
+            "args": [
+                "contexts",
+                "list"
+            ],
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/src"
         }
     ]
 }
