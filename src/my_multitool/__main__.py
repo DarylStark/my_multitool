@@ -8,6 +8,7 @@ import typer
 from .database import app as database_app
 from .contexts import app as contexts_app
 
+
 def main() -> None:
     """Entry point for the CLI script.
 

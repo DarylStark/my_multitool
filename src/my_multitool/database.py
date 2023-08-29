@@ -13,4 +13,3 @@ def create() -> None:
 
     Creates the database schema for the currently activated context.
     """
-    

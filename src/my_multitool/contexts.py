@@ -19,12 +19,14 @@ def lst() -> None:
     Lists all configured contexts.
     """
 
+
 @app.command(name='create')
 def create() -> None:
     """Create a context.
 
     Creates a Context to use with the CLI app.
     """
+
 
 @app.command(name='use')
 def use() -> None:
