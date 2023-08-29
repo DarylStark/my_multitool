@@ -1,0 +1,18 @@
+# Changes here will be overwritten by Copier
+_commit: e60d13c
+_src_path: gh:DarylStark/copier_templates
+devcontainer: true
+github_workflow: true
+license: MIT
+package_name: my_multitool
+project_description: 'Multitool for the My Project. Contains a CLI script to configure
+    the database and do other tasks.
+
+    '
+project_description_short: 'Multitool for the My Project.
+
+    '
+project_name: My Multitool
+pypi_package_description: Multitools for the My project
+pypi_package_name: ds-my-multitool
+sphinx_docs: true
