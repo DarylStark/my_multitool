@@ -7,7 +7,8 @@ application.
 from pydantic import BaseModel, Extra, ValidationError
 import yaml
 from .exceptions import (ConfigFileNotFoundException,
-                         ConfigFileNotValidException)
+                         ConfigFileNotValidException, NoConfigToSaveException)
+from os.path import expanduser
 
 
 class ContextModel(BaseModel):
@@ -73,7 +74,7 @@ class ConfigManager:
             create: determines if the file has to be created if it does not
                 exist.
         """
-        self.yaml_file = yaml_file
+        self.yaml_file = expanduser(yaml_file)
         self.config: ConfigModel | None = None
 
     def load(self) -> None:
@@ -82,6 +83,12 @@ class ConfigManager:
         Loads the configuration and applies the model to it. If the file is
         correct, the configuration gets saved in the object and can be used by
         the application.
+
+        Raises:
+            ConfigFileNotFoundException: when the given configfile is not
+                found.
+            ConfigFileNotValidException: when the given configfile is not
+                correct.
         """
         try:
             with open(self.yaml_file, 'r') as input_file:
@@ -99,8 +106,25 @@ class ConfigManager:
         """Save the configuration to file.
 
         Saves the configuration to the specified file.
+
+        Raises:
+            NoConfigToSaveException: when the config is not set yet.
         """
-        raise NotImplementedError
+        if self.config:
+            with open(self.yaml_file, 'w') as output_file:
+                yaml.dump(self.config.dict(), output_file)
+        else:
+            raise NoConfigToSaveException('Configuration not set yet')
+
+    def set_default_config(self) -> None:
+        """Set default config.
+
+        Method to set the default config for the object. This can be used as a
+        default for when there is no config.
+        """
+        self.config = ConfigModel(active_context='default', contexts=[
+            ContextModel(name='default', db_string='sqlite:///:memory:')
+        ])
 
     @property
     def contexts(self) -> dict[str, ContextModel] | None:

@@ -14,3 +14,7 @@ class ConfigFileNotFoundException(MyMultitoolException):
 
 class ConfigFileNotValidException(MyMultitoolException):
     """Exception for when the configfile is invalid."""
+
+
+class NoConfigToSaveException(MyMultitoolException):
+    """Exception for a config is saved before loading it."""
