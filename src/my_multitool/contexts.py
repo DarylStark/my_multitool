@@ -8,11 +8,13 @@ appropiate for the work you have to do.
 """
 
 import typer
+from rich import box
 from rich.console import Console
 from rich.table import Table
-from rich import box
-from .globals import config
+
+from .config import ContextModel
 from .exceptions import GenericCLIException
+from .globals import config
 
 app = typer.Typer(no_args_is_help=True)
 
@@ -24,7 +26,7 @@ def lst() -> None:
     Lists all configured contexts.
 
     Raises:
-        GenericCLIException: when no contexts exists
+        GenericCLIException: when no contexts exists.
     """
     console = Console()
     contexts = config.contexts
@@ -46,11 +48,28 @@ def lst() -> None:
 
 
 @app.command(name='create')
-def create(name: str) -> None:
+def create(name: str, db_string: str) -> None:
     """Create a context.
 
     Creates a Context to use with the CLI app.
+
+    Args:
+        name: the name of the context.
+        db_string: the string for the database connection.
+
+    Raises:
+        GenericCLIException: when there is already a context with this name.
     """
+    console = Console()
+    contexts = config.contexts
+    if contexts:
+        if name in contexts.keys():
+            raise GenericCLIException(
+                f'Context with name "{name}" already exists')
+        config.config.contexts.append(
+            ContextModel(name=name, db_string=db_string))
+        config.save()
+        console.print(f'Context with name "{name}" is created')
 
 
 @app.command(name='use')

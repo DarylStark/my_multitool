@@ -23,6 +23,20 @@
             ],
             "justMyCode": true,
             "cwd": "${workspaceFolder}/src"
+        },
+        {
+            "name": "Debug CLI script - Contexts - Create",
+            "type": "python",
+            "request": "launch",
+            "module": "my_multitool",
+            "args": [
+                "contexts",
+                "create",
+                "test",
+                "sqlite:///:memory:"
+            ],
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/src"
         }
     ]
 }
