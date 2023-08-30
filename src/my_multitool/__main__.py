@@ -8,11 +8,12 @@ import sys
 
 import typer
 from rich.logging import RichHandler
+from rich.console import Console
 
 from .contexts import app as contexts_app
 from .database import app as database_app
 from .exceptions import (ConfigFileNotFoundException,
-                         ConfigFileNotValidException)
+                         ConfigFileNotValidException, GenericCLIException)
 from .globals import config
 
 
@@ -51,7 +52,11 @@ def main() -> None:
     app.add_typer(contexts_app, name='contexts', help='Context management')
 
     # Run the Typer app
-    app()
+    try:
+        app()
+    except GenericCLIException as exception:
+        console = Console()
+        console.print(f'[red][b]Error:[/b] {exception}')
 
 
 if __name__ == '__main__':

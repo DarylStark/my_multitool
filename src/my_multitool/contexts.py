@@ -12,6 +12,7 @@ from rich.console import Console
 from rich.table import Table
 from rich import box
 from .globals import config
+from .exceptions import GenericCLIException
 
 app = typer.Typer(no_args_is_help=True)
 
@@ -21,6 +22,9 @@ def lst() -> None:
     """List configured contexts.
 
     Lists all configured contexts.
+
+    Raises:
+        GenericCLIException: when no contexts exists
     """
     console = Console()
     contexts = config.contexts
@@ -38,11 +42,11 @@ def lst() -> None:
             table.add_row(active, f'{name}', context.db_string)
         console.print(table)
     else:
-        console.print('No contexts set')
+        raise GenericCLIException('No contexts set')
 
 
 @app.command(name='create')
-def create() -> None:
+def create(name: str) -> None:
     """Create a context.
 
     Creates a Context to use with the CLI app.
@@ -57,6 +61,9 @@ def use(context: str) -> None:
 
     Args:
         context: the context to activate.
+
+    Raises:
+        GenericCLIException: when the selected context does not exists.
     """
     console = Console()
     contexts = config.contexts
@@ -66,4 +73,4 @@ def use(context: str) -> None:
             config.save()
             console.print(f'Now using "{context}"')
             return
-    console.print(f'Context "{context}" is not configured.')
+    raise GenericCLIException(f'Context "{context}" is not configured.')

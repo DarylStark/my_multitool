@@ -18,3 +18,7 @@ class ConfigFileNotValidException(MyMultitoolException):
 
 class NoConfigToSaveException(MyMultitoolException):
     """Exception for a config is saved before loading it."""
+
+
+class GenericCLIException(MyMultitoolException):
+    """Exception for a generic error in the CLI options."""
