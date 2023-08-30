@@ -8,6 +8,9 @@ appropiate for the work you have to do.
 """
 
 import typer
+from rich.console import Console
+from rich.table import Table
+from rich import box
 from .globals import config
 
 app = typer.Typer(no_args_is_help=True)
@@ -19,12 +22,23 @@ def lst() -> None:
 
     Lists all configured contexts.
     """
+    console = Console()
     contexts = config.contexts
     if contexts:
-        for context in contexts:
-            print(context)
+        table = Table(box=box.SIMPLE)
+        table.add_column('*')
+        table.add_column('Name')
+        table.add_column('Database string')
+
+        for name, context in contexts.items():
+            active = ''
+            if config.config:
+                if config.config.active_context == name:
+                    active = '*'
+            table.add_row(active, f'{name}', context.db_string)
+        console.print(table)
     else:
-        print('No contexts set')
+        console.print('No contexts set')
 
 
 @app.command(name='create')

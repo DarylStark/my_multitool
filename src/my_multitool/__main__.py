@@ -9,7 +9,6 @@ import sys
 import typer
 from rich.logging import RichHandler
 
-from .config import ConfigManager
 from .contexts import app as contexts_app
 from .database import app as database_app
 from .exceptions import (ConfigFileNotFoundException,

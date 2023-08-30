@@ -4,11 +4,13 @@ This module contains the class to retrive and save configuration for the CLI
 application.
 """
 
-from pydantic import BaseModel, Extra, ValidationError
+from os.path import expanduser
+
 import yaml
+from pydantic import BaseModel, Extra, ValidationError
+
 from .exceptions import (ConfigFileNotFoundException,
                          ConfigFileNotValidException, NoConfigToSaveException)
-from os.path import expanduser
 
 
 class ContextModel(BaseModel):
