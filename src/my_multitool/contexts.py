@@ -50,8 +50,20 @@ def create() -> None:
 
 
 @app.command(name='use')
-def use() -> None:
+def use(context: str) -> None:
     """Use a context.
 
     Activates a context.
+
+    Args:
+        context: the context to activate.
     """
+    console = Console()
+    contexts = config.contexts
+    if contexts:
+        if context in contexts.keys() and config.config:
+            config.config.active_context = context
+            config.save()
+            console.print(f'Now using "{context}"')
+            return
+    console.print(f'Context "{context}" is not configured.')
