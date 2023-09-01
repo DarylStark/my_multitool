@@ -71,6 +71,31 @@ def create(name: str, db_string: str) -> None:
         console.print(f'Context with name "{name}" is created')
 
 
+@app.command(name='delete')
+def delete(name: str) -> None:
+    """Delete a context.
+
+    Deletes a Context from the config.
+
+    Args:
+        name: the name of the context.
+
+    Raises:
+        GenericCLIException: when the given context doesn't exist.
+    """
+    console = Console()
+    contexts = config.contexts
+    if contexts.get(name):
+        config.config.contexts = list(filter(
+            lambda x: x.name != name,
+            config.config.contexts))
+        config.save()
+        console.print(f'Context with name "{name}" is deleted')
+        return
+    raise GenericCLIException(
+        f'Context with name "{name}" does not exist')
+
+
 @app.command(name='use')
 def use(context: str) -> None:
     """Use a context.

@@ -37,6 +37,19 @@
             ],
             "justMyCode": true,
             "cwd": "${workspaceFolder}/src"
+        },
+        {
+            "name": "Debug CLI script - Contexts - Delete",
+            "type": "python",
+            "request": "launch",
+            "module": "my_multitool",
+            "args": [
+                "contexts",
+                "delete",
+                "test"
+            ],
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/src"
         }
     ]
 }
