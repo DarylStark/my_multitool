@@ -77,6 +77,7 @@ class ConfigManager:
         Sets the default values for the internal variables.
         """
         self.yaml_file: str = ''
+        self.config: ConfigModel = ConfigModel(active_context='default')
 
     def configure(self, yaml_file: str) -> None:
         """Configure the config-object.
@@ -105,16 +106,16 @@ class ConfigManager:
             raise ConfigFileNotFoundException
 
         try:
-            with open(self.yaml_file, 'r') as input_file:
+            with open(self.yaml_file, 'r', encoding='utf-8') as input_file:
                 content = yaml.safe_load(input_file)
-        except FileNotFoundError:
-            raise ConfigFileNotFoundException
+        except FileNotFoundError as exc:
+            raise ConfigFileNotFoundException from exc
 
         # Create a ConfigModel of it
         try:
             self.config = ConfigModel(**content)
-        except ValidationError:
-            raise ConfigFileNotValidException
+        except ValidationError as exc:
+            raise ConfigFileNotValidException from exc
 
     def save(self) -> None:
         """Save the configuration to file.
@@ -125,7 +126,7 @@ class ConfigManager:
             NoConfigToSaveException: when the config is not set yet.
         """
         if self.config and self.yaml_file:
-            with open(self.yaml_file, 'w') as output_file:
+            with open(self.yaml_file, 'w', encoding='utf-8') as output_file:
                 yaml.dump(self.config.dict(), output_file)
         else:
             raise NoConfigToSaveException('Configuration not set yet')

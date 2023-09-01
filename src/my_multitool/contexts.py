@@ -7,7 +7,6 @@ Within the CLI, you can configure these contexts and active the one that is
 appropiate for the work you have to do.
 """
 
-from multiprocessing import context
 import typer
 from rich.console import Console
 
@@ -48,9 +47,6 @@ def retrieve() -> None:
     """List configured contexts.
 
     Lists all configured contexts.
-
-    Raises:
-        GenericCLIException: when no contexts exists.
     """
     console = Console()
     contexts = config.contexts
