@@ -18,6 +18,30 @@ from .style import table_factory
 app = typer.Typer(no_args_is_help=True)
 
 
+@app.command(name='create')
+def create(name: str, db_string: str) -> None:
+    """Create a context.
+
+    Creates a Context to use with the CLI app.
+
+    Args:
+        name: the name of the context.
+        db_string: the string for the database connection.
+
+    Raises:
+        GenericCLIException: when there is already a context with this name.
+    """
+    console = Console()
+    contexts = config.contexts
+    if name in contexts.keys():
+        raise GenericCLIException(
+            f'Context with name "{name}" already exists')
+    config.config.contexts.append(
+        ContextModel(name=name, db_string=db_string))
+    config.save()
+    console.print(f'Context with name "{name}" is created')
+
+
 @app.command(name='list')
 def lst() -> None:
     """List configured contexts.
@@ -41,30 +65,6 @@ def lst() -> None:
                 active = '*'
         table.add_row(active, f'{name}', context.db_string)
     console.print(table)
-
-
-@app.command(name='create')
-def create(name: str, db_string: str) -> None:
-    """Create a context.
-
-    Creates a Context to use with the CLI app.
-
-    Args:
-        name: the name of the context.
-        db_string: the string for the database connection.
-
-    Raises:
-        GenericCLIException: when there is already a context with this name.
-    """
-    console = Console()
-    contexts = config.contexts
-    if name in contexts.keys():
-        raise GenericCLIException(
-            f'Context with name "{name}" already exists')
-    config.config.contexts.append(
-        ContextModel(name=name, db_string=db_string))
-    config.save()
-    console.print(f'Context with name "{name}" is created')
 
 
 @app.command(name='delete')
