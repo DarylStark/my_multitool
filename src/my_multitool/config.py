@@ -35,6 +35,7 @@ class ContextModel(BaseModel):
         fields that are not defined. This results in a more robust
         configuration.
         """
+
         extra = Extra.forbid
 
 
@@ -48,6 +49,7 @@ class ConfigModel(BaseModel):
         active_context: the currently activated context.
         contexts: a list with configured contexts.
     """
+
     active_context: str
     contexts: list[ContextModel] = []
 
@@ -58,6 +60,7 @@ class ConfigModel(BaseModel):
         fields that are not defined. This results in a more robust
         configuration.
         """
+
         extra = Extra.forbid
 
 
@@ -69,7 +72,7 @@ class ConfigManager:
     """
 
     def __init__(self) -> None:
-        """Initiator sets default values.
+        """Initiate default values.
 
         Sets the default values for the internal variables.
         """
@@ -174,6 +177,9 @@ class ConfigManager:
         """Get the active Context.
 
         Returns the active context.
+
+        Returns:
+            The ContextModel for the active context.
         """
         if getattr(self, 'config', None) is None:
             self.load()

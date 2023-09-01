@@ -9,10 +9,13 @@ from rich import box
 
 
 def table_factory() -> Table:
-    """Function to create a Rich Table.
+    """Create a Rich Table.
 
     Creates a Rich Table to use by functions that list data. By using a
     function for this, we can make sure all listing functions have the same
     look and feel.
+
+    Returns:
+        A Rich Table instance.
     """
     return Table(box=box.SIMPLE)
