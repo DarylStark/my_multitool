@@ -8,13 +8,12 @@ appropiate for the work you have to do.
 """
 
 import typer
-from rich import box
 from rich.console import Console
-from rich.table import Table
 
 from .config import ContextModel
 from .exceptions import GenericCLIException
 from .globals import config
+from .style import table_factory
 
 app = typer.Typer(no_args_is_help=True)
 
@@ -31,7 +30,7 @@ def lst() -> None:
     console = Console()
     contexts = config.contexts
     if contexts:
-        table = Table(box=box.SIMPLE)
+        table = table_factory()
         table.add_column('*')
         table.add_column('Name')
         table.add_column('Database string')
