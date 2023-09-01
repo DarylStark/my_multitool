@@ -29,21 +29,18 @@ def lst() -> None:
     """
     console = Console()
     contexts = config.contexts
-    if contexts:
-        table = table_factory()
-        table.add_column('*')
-        table.add_column('Name')
-        table.add_column('Database string')
+    table = table_factory()
+    table.add_column('*')
+    table.add_column('Name')
+    table.add_column('Database string')
 
-        for name, context in contexts.items():
-            active = ''
-            if config.config:
-                if config.config.active_context == name:
-                    active = '*'
-            table.add_row(active, f'{name}', context.db_string)
-        console.print(table)
-    else:
-        raise GenericCLIException('No contexts set')
+    for name, context in contexts.items():
+        active = ''
+        if config.config:
+            if config.config.active_context == name:
+                active = '*'
+        table.add_row(active, f'{name}', context.db_string)
+    console.print(table)
 
 
 @app.command(name='create')
@@ -61,14 +58,13 @@ def create(name: str, db_string: str) -> None:
     """
     console = Console()
     contexts = config.contexts
-    if contexts:
-        if name in contexts.keys():
-            raise GenericCLIException(
-                f'Context with name "{name}" already exists')
-        config.config.contexts.append(
-            ContextModel(name=name, db_string=db_string))
-        config.save()
-        console.print(f'Context with name "{name}" is created')
+    if name in contexts.keys():
+        raise GenericCLIException(
+            f'Context with name "{name}" already exists')
+    config.config.contexts.append(
+        ContextModel(name=name, db_string=db_string))
+    config.save()
+    console.print(f'Context with name "{name}" is created')
 
 
 @app.command(name='delete')
@@ -110,10 +106,9 @@ def use(context: str) -> None:
     """
     console = Console()
     contexts = config.contexts
-    if contexts:
-        if context in contexts.keys() and config.config:
-            config.config.active_context = context
-            config.save()
-            console.print(f'Now using "{context}"')
-            return
+    if context in contexts.keys() and config.config:
+        config.config.active_context = context
+        config.save()
+        console.print(f'Now using "{context}"')
+        return
     raise GenericCLIException(f'Context "{context}" is not configured.')
