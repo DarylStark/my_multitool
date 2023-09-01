@@ -7,6 +7,7 @@ Within the CLI, you can configure these contexts and active the one that is
 appropiate for the work you have to do.
 """
 
+from multiprocessing import context
 import typer
 from rich.console import Console
 
@@ -65,6 +66,39 @@ def retrieve() -> None:
                 active = '*'
         table.add_row(active, f'{name}', context.db_string)
     console.print(table)
+
+
+@app.command(name='set')
+def update(name: str,
+           new_name: str | None = None,
+           db_string: str | None = None):
+    """Update a configured context.
+
+    Updates a configured context.
+
+    Args:
+        name: the name of the context to update.
+        new_name: a new name for the context.
+        db_string: a new DB string for the context.
+
+    Raises:
+        GenericCLIException: when the given context doesn't exist.
+    """
+    console = Console()
+    contexts = config.contexts
+    selected_context = contexts.get(name)
+    if selected_context:
+        # Set the updated fields
+        if new_name:
+            selected_context.name = new_name
+        if db_string:
+            selected_context.db_string = db_string
+
+        config.save()
+        console.print(f'Context with name "{name}" is updated')
+        return
+    raise GenericCLIException(
+        f'Context with name "{name}" does not exist')
 
 
 @app.command(name='delete')
