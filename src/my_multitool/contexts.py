@@ -111,8 +111,12 @@ def delete(name: str) -> None:
         name: the name of the context.
 
     Raises:
-        GenericCLIException: when the given context doesn't exist.
+        GenericCLIException: when the given context doesn't exist or when the
+            user tries to remove the context that is active.
     """
+    if config.config.active_context == name:
+        raise GenericCLIException('Cannot remove active context')
+
     console = Console()
     contexts = config.contexts
     if contexts.get(name):
