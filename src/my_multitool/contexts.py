@@ -43,7 +43,7 @@ def create(name: str, db_string: str) -> None:
 
 
 @app.command(name='list')
-def lst() -> None:
+def retrieve() -> None:
     """List configured contexts.
 
     Lists all configured contexts.
