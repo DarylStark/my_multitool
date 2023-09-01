@@ -91,6 +91,8 @@ def update(name: str,
         # Set the updated fields
         if new_name:
             selected_context.name = new_name
+            if config.config.active_context == name:
+                config.config.active_context = new_name
         if db_string:
             selected_context.db_string = db_string
 
