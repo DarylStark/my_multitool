@@ -5,9 +5,9 @@ This package is meant to be used as a CLI script. After installation, it is star
 
 .. code-block:: bash
 
-    ~ $ my_multitool
+    ~ $ my-multitool
                                                                                                                                                                 
-     Usage: my_multitool [OPTIONS] COMMAND [ARGS]...                                                                                                      
+     Usage: my-multitool [OPTIONS] COMMAND [ARGS]...                                                                                                      
                                                                                                                                                                     
     ╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
     │ --install-completion        [bash|zsh|fish|powershell|pwsh]  Install completion for the specified shell. [default: None]                                     │
