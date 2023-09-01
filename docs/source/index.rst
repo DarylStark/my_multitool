@@ -3,14 +3,32 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to My Multitool's documentation!
-==============================================
+Welcome to my-multitool's documentation!
+========================================
+
+The ``my-multiool`` Python application provides basic tools to work with a instance of the My Project.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Script usage:
+   :numbered:
 
+   usage/installation
+   usage/overview
+   usage/contexts
+   usage/databases
 
+.. toctree::
+   :caption: API documentation
+   :hidden:
+   :maxdepth: 2
+
+   api_documentation/config
+   api_documentation/contexts
+   api_documentation/database
+   api_documentation/exceptions
+   api_documentation/globals
+   api_documentation/style
 
 Indices and tables
 ==================

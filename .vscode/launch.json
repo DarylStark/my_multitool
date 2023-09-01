@@ -1,0 +1,55 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug CLI script",
+            "type": "python",
+            "request": "launch",
+            "module": "my_multitool",
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/src"
+        },
+        {
+            "name": "Debug CLI script - Contexts - List",
+            "type": "python",
+            "request": "launch",
+            "module": "my_multitool",
+            "args": [
+                "contexts",
+                "list"
+            ],
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/src"
+        },
+        {
+            "name": "Debug CLI script - Contexts - Create",
+            "type": "python",
+            "request": "launch",
+            "module": "my_multitool",
+            "args": [
+                "contexts",
+                "create",
+                "test",
+                "sqlite:///:memory:"
+            ],
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/src"
+        },
+        {
+            "name": "Debug CLI script - Contexts - Delete",
+            "type": "python",
+            "request": "launch",
+            "module": "my_multitool",
+            "args": [
+                "contexts",
+                "delete",
+                "test"
+            ],
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/src"
+        }
+    ]
+}
