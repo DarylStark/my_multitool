@@ -73,8 +73,7 @@ class ConfigManager:
 
         Sets the default values for the internal variables.
         """
-        self.yaml_file: str | None = None
-        self.config: ConfigModel | None = None
+        self.yaml_file: str = ''
 
     def configure(self, yaml_file: str) -> None:
         """Configure the config-object.
@@ -139,7 +138,7 @@ class ConfigManager:
         ])
 
     @property
-    def contexts(self) -> dict[str, ContextModel] | None:
+    def contexts(self) -> dict[str, ContextModel]:
         """Get the configured contexts.
 
         Returns the configured context as a dict where the key the name of the
@@ -150,8 +149,32 @@ class ConfigManager:
             value the ContextModel instance for the context or, if the config
             is not set; None.
         """
-        if self.config:
-            return {
-                context.name: context for context in self.config.contexts
-            }
-        return None
+        if getattr(self, 'config', None) is None:
+            self.load()
+
+        return {
+            context.name: context for context in self.config.contexts
+        }
+
+    @property
+    def full_config(self) -> ConfigModel:
+        """Get the full configuration.
+
+        Returns the full configuration.
+
+        Returns:
+            The ConfigModel.
+        """
+        if getattr(self, 'config', None) is None:
+            self.load()
+        return self.config
+
+    @property
+    def active_context(self) -> ContextModel:
+        """Get the active Context.
+
+        Returns the active context.
+        """
+        if getattr(self, 'config', None) is None:
+            self.load()
+        return self.contexts[self.config.active_context]
