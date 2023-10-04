@@ -3,9 +3,11 @@
 Exposes the `database` commands for the CLI app.
 """
 from logging import getLogger
+
 import typer
+from my_data.my_data import MyData  # type:ignore
+
 from .globals import config
-from my_data.my_data import MyData
 
 app = typer.Typer(no_args_is_help=True)
 
@@ -26,7 +28,7 @@ def create(echo_sql: bool = False,
         create_data: if set to True, testdata will be created.
     """
     logger = getLogger('database-create')
-    logger.info(f'Using config "{config.active_context.name}"')
+    logger.info('Using config "%s"', config.active_context.name)
 
     logger.debug('Creating MyData object')
     data = MyData()
