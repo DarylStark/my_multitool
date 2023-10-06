@@ -19,7 +19,7 @@ app = typer.Typer(no_args_is_help=True)
 
 
 @app.command(name='create')
-def create(name: str, db_string: str) -> None:
+def create(name: str, db_string: str, warning: bool = False) -> None:
     """Create a context.
 
     Creates a Context to use with the CLI app.
@@ -27,6 +27,8 @@ def create(name: str, db_string: str) -> None:
     Args:
         name: the name of the context.
         db_string: the string for the database connection.
+        warning: if the context should generate a warning before running
+            anything.
 
     Raises:
         GenericCLIException: when there is already a context with this name.
@@ -37,7 +39,7 @@ def create(name: str, db_string: str) -> None:
         raise GenericCLIException(
             f'Context with name "{name}" already exists')
     config.config.contexts.append(
-        ContextModel(name=name, db_string=db_string))
+        ContextModel(name=name, db_string=db_string, warning=warning))
     config.save()
     console.print(f'Context with name "{name}" is created')
 
@@ -54,20 +56,23 @@ def retrieve() -> None:
     table.add_column('*')
     table.add_column('Name')
     table.add_column('Database string')
+    table.add_column('Warning')
 
     for name, context in contexts.items():
         active = ''
         if config.config:
             if config.config.active_context == name:
                 active = '*'
-        table.add_row(active, f'{name}', context.db_string)
+            warning = '*' if context.warning else ''
+        table.add_row(active, f'{name}', context.db_string, warning)
     console.print(table)
 
 
 @app.command(name='set')
 def update(name: str,
            new_name: str | None = None,
-           db_string: str | None = None):
+           db_string: str | None = None,
+           warning: bool | None = None):
     """Update a configured context.
 
     Updates a configured context.
@@ -76,6 +81,8 @@ def update(name: str,
         name: the name of the context to update.
         new_name: a new name for the context.
         db_string: a new DB string for the context.
+        warning: if the context should generate a warning before running
+            anything.
 
     Raises:
         GenericCLIException: when the given context doesn't exist.
@@ -91,6 +98,8 @@ def update(name: str,
                 config.config.active_context = new_name
         if db_string:
             selected_context.db_string = db_string
+        if warning is not None:
+            selected_context.warning = warning
 
         config.save()
         console.print(f'Context with name "{name}" is updated')
