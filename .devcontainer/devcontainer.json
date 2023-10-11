@@ -10,7 +10,8 @@
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-		"ghcr.io/devcontainers-contrib/features/poetry:2": {}
+		"ghcr.io/devcontainers-contrib/features/poetry:2": {},
+		"ghcr.io/warrenbuckley/codespace-features/sqlite:latest": {}
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

@@ -50,6 +50,18 @@
             ],
             "justMyCode": true,
             "cwd": "${workspaceFolder}/src"
+        },
+        {
+            "name": "Debug CLI script - Databases - Create",
+            "type": "python",
+            "request": "launch",
+            "module": "my_multitool",
+            "args": [
+                "database",
+                "create"
+            ],
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/src"
         }
     ]
 }
