@@ -4,6 +4,7 @@ Exposes the `database` commands for the CLI app.
 """
 from logging import getLogger
 
+from rich.console import Console
 import typer
 from my_data.my_data import MyData  # type:ignore
 
@@ -28,7 +29,17 @@ def create(echo_sql: bool = False,
         create_data: if set to True, testdata will be created.
     """
     logger = getLogger('database-create')
+    console = Console()
     logger.info('Using config "%s"', config.active_context.name)
+
+    if config.active_context.warning:
+        logger.warning('Context mandates a warning for this action')
+        confirm = console.input(
+            '[yellow]' +
+            f'You are working on context "{config.active_context.name}". ' +
+            'This action can be fatal. Continue? [ Y/n ] [/yellow]')
+        if confirm.lower().strip() != 'y' and confirm.strip() != '':
+            return
 
     logger.debug('Creating MyData object')
     data = MyData()
@@ -40,7 +51,9 @@ def create(echo_sql: bool = False,
 
     logger.debug('Creating tables')
     data.create_db_tables(drop_tables=drop_tables)
+    console.print('Created tables')
 
     if create_data:
         logger.debug('Creating test data')
         data.create_init_data()
+        console.print('Created testdata')
