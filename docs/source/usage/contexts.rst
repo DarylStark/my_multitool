@@ -8,7 +8,7 @@ A context has two fields:
 -   ``name``: the name of the context. For instance: ``production`` or ``instance01``
 -   ``db_string``: the database URL for SQLAlchemy. For instance: ``sqlite:///:memory:/``.
 
-When starting the application for the first time, a default context with the name ``context`` is created. The database URL for this context is a SQLite in-memory database. All context related commands are placed in the `contexts` subcommand:
+When starting the application for the first time, a default context with the name ``context`` is created. The database URL for this context is a SQLite in-memory database. All context related commands are placed in the ``contexts`` subcommand:
 
 .. code-block::
 
