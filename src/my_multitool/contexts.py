@@ -60,11 +60,13 @@ def retrieve() -> None:
 
     for name, context in contexts.items():
         active = ''
+        warning = ''
         if config.config:
             if config.config.active_context == name:
                 active = '*'
             warning = '*' if context.warning else ''
-        table.add_row(active, f'{name}', context.db_string, warning)
+        table.add_row(active, f'{name}',
+                      context.db_string_with_masked_pwd, warning)
     console.print(table)
 
 
