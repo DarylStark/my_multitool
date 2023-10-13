@@ -4,6 +4,7 @@ This module contains the class to retrive and save configuration for the CLI
 application.
 """
 
+import re
 from os.path import expanduser
 
 import yaml
@@ -37,6 +38,22 @@ class ContextModel(BaseModel):
         """
 
         extra = Extra.forbid
+
+    @property
+    def db_string_with_masked_pwd(self) -> str:
+        """Property for the database string with a maked password.
+
+        This property returns the db string with the password masked. The
+        password will be displayed as three asteriks. This can be useful
+        for displaying the db string on screen without revealing sensitive
+        information.
+
+        Returns:
+            The DB string without the password.
+        """
+        return re.sub(r'//(\S+):(\S+)@',
+                      lambda x: f'//{x.group(1)}:***@',
+                      self.db_string)
 
 
 class ConfigModel(BaseModel):

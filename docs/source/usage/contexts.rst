@@ -43,9 +43,9 @@ To list all configured contexts, you use the ``list`` command in the ``contexts`
       *   Name      Database string     
      ──────────────────────────────────────────────────
       *   default   sqlite:///:memory:  
-          prod      mysql:///username:pass@10.1.1.1/
+          prod      mysql:///username:***@10.1.1.1/
 
-The asterisk in front of the ``default`` context indicates that this is the selected context. Every command that you execute with the tool, will be executed on that context and on the selected database.
+The asterisk in front of the ``default`` context indicates that this is the selected context. Every command that you execute with the tool, will be executed on that context and on the selected database. If there is a password in the database string, the application will mask it with three asterisks. There is no way to display the password after configuring it, except for looking in the configurationfile itself.
 
 Creating a Context
 ------------------
