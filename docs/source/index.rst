@@ -17,6 +17,7 @@ The ``my-multiool`` Python application provides basic tools to work with a insta
    usage/overview
    usage/contexts
    usage/databases
+   usage/users
 
 .. toctree::
    :caption: API documentation
@@ -29,6 +30,7 @@ The ``my-multiool`` Python application provides basic tools to work with a insta
    api_documentation/exceptions
    api_documentation/globals
    api_documentation/style
+   api_documentation/users
 
 Indices and tables
 ==================

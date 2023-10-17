@@ -60,6 +60,8 @@ After creating the context, you can see it with the ``contexts list`` command.
     ~ $ my-multitool contexts create my_context sqlite:///home/vscode/db.sql
     Context with name "my_context" is created
 
+You can also specify a ``--service-user``, ``--service-pass`` and ``--root-user`` to define credentials within the context that should be used for working with users in the database.
+
 Editing a Context
 -----------------
 
@@ -69,6 +71,9 @@ To edit a context, you use the ``set`` command. After the command, you give the 
 -   ``--db-string``: a new DB string for the context.
 -   ``--warning``: to enable the warning flag for the context.
 -   ``--no-warning``: to disable the warning flag for the context.
+-   ``--service-user``: the user to use when creating a service connection.
+-   ``--service-pass``: the password to use when creating a service connection.
+-   ``--root-user``: the root user to use when working with users.
 
 For example, to rename the context with name ``my_context`` to ``test_context``, you have to use the following command:
 

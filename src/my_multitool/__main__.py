@@ -12,6 +12,7 @@ from rich.console import Console
 
 from .contexts import app as contexts_app
 from .database import app as database_app
+from .users import app as users_app
 from .exceptions import (ConfigFileNotFoundException,
                          ConfigFileNotValidException, GenericCLIException)
 from .globals import config
@@ -50,6 +51,7 @@ def main() -> None:
     # Add subcommand's
     app.add_typer(database_app, name='database', help='Database management')
     app.add_typer(contexts_app, name='contexts', help='Context management')
+    app.add_typer(users_app, name='users', help='User management')
 
     # Run the Typer app
     try:

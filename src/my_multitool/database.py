@@ -4,11 +4,10 @@ Exposes the `database` commands for the CLI app.
 """
 from logging import getLogger
 
-from rich.console import Console
 import typer
-from my_data.my_data import MyData  # type:ignore
+from rich.console import Console
 
-from .globals import config
+from .globals import config, get_global_data_object
 
 app = typer.Typer(no_args_is_help=True)
 
@@ -42,7 +41,7 @@ def create(echo_sql: bool = False,
             return
 
     logger.debug('Creating MyData object')
-    data = MyData()
+    data = get_global_data_object()
     data.configure(db_connection_str=config.active_context.db_string,
                    database_args={'echo': echo_sql})
 

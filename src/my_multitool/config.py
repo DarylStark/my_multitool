@@ -28,6 +28,9 @@ class ContextModel(BaseModel):
     name: str
     db_string: str
     warning: bool = False
+    service_user: str | None = None
+    service_pass: str | None = None
+    root_user: str | None = None
 
     class Config:
         """Configuration for the model.

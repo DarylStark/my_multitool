@@ -62,6 +62,18 @@
             ],
             "justMyCode": true,
             "cwd": "${workspaceFolder}/src"
-        }
+        },
+        {
+            "name": "Debug CLI script - Users - List",
+            "type": "python",
+            "request": "launch",
+            "module": "my_multitool",
+            "args": [
+                "users",
+                "list"
+            ],
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/src"
+        },
     ]
 }
