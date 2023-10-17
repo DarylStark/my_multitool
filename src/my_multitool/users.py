@@ -24,6 +24,10 @@ def retrieve() -> None:
     account in order to do this. The service account should contain a password,
     the root account doesn't need this since the service account can just
     retrieve it.
+
+    Raises:
+        GenericCLIException: when no Service user or password is set in the
+            active context.
     """
     logger = getLogger('users-list')
     console = Console()

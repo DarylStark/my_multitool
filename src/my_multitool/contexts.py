@@ -110,6 +110,9 @@ def update(name: str,
         db_string: a new DB string for the context.
         warning: if the context should generate a warning before running
             anything.
+        service_user: the service user to use when connecting to this instance.
+        service_pass: the password for the service user.
+        root_user: the username of a root user to use when working with users.
 
     Raises:
         GenericCLIException: when the given context doesn't exist.
