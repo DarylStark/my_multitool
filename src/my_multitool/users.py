@@ -2,14 +2,16 @@
 
 Exposes the `users` commands for the CLI app.
 """
+from getpass import getpass
 from logging import getLogger
 
 import typer
+from my_data.exceptions import UnknownUserAccountException  # type:ignore
 from my_data.my_data import MyData  # type:ignore
+from my_model.user_scoped_models import User  # type:ignore
 from rich.console import Console
 
 from .exceptions import GenericCLIException
-
 from .globals import config
 from .style import table_factory
 
@@ -50,8 +52,13 @@ def retrieve() -> None:
     with data.get_context_for_service_user(
             username=config.active_context.service_user,
             password=config.active_context.service_pass) as context:
-        user = context.get_user_account_by_username(
-            config.active_context.root_user)
+        try:
+            user = context.get_user_account_by_username(
+                config.active_context.root_user)
+        except UnknownUserAccountException as exc:
+            raise GenericCLIException(
+                f'Unknown root user: "{config.active_context.root_user}"') \
+                from exc
 
     if user:
         with data.get_context(user=user) as context:
@@ -71,3 +78,62 @@ def retrieve() -> None:
                     str(user.role),
                     'Yes' if user.second_factor else 'No')
             console.print(table)
+
+
+@app.command()
+def set_password(username: str) -> None:
+    """Set the password for a specific user
+
+    Resets the password for any user to a new password.
+
+    Args:
+        username: the username of the user to edit.
+
+    Raises:
+        GenericCLIException: when no Service user or password is set in the
+            active context, or when the given passwords don't match.
+    """
+    logger = getLogger('users-set-password')
+    logger.info('Using config "%s"', config.active_context.name)
+
+    # TODO: duplicate code; move to function
+    logger.debug('Creating MyData object')
+    data = MyData()
+    data.configure(db_connection_str=config.active_context.db_string)
+
+    user = None
+    if any((
+        config.active_context.service_user is None,
+        config.active_context.service_pass is None,
+        config.active_context.root_user is None,
+    )):
+        raise GenericCLIException(
+            'Service user credentials or root user not set in active context')
+
+    with data.get_context_for_service_user(
+            username=config.active_context.service_user,
+            password=config.active_context.service_pass) as context:
+        try:
+            user = context.get_user_account_by_username(
+                config.active_context.root_user)
+        except UnknownUserAccountException as exc:
+            raise GenericCLIException(
+                f'Unknown root user: "{config.active_context.root_user}"') \
+                from exc
+
+    if user:
+        new_password = getpass('Password: ')
+        if len(new_password) == 0:
+            raise GenericCLIException('Password too short')
+
+        new_password_repeat = getpass('Repeat: ')
+        if new_password != new_password_repeat:
+            raise GenericCLIException('Passwords do not match')
+
+        with data.get_context(user=user) as context:
+            users_accounts = context.users.retrieve(User.username == username)
+            if len(users_accounts) != 1:
+                raise GenericCLIException(
+                    f'User "{username}" not found.')
+            users_accounts[0].set_password(new_password)
+            context.users.update(users_accounts)
