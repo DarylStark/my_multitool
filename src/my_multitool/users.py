@@ -7,12 +7,11 @@ from logging import getLogger
 
 import typer
 from my_data.exceptions import UnknownUserAccountException  # type:ignore
-from my_data.my_data import MyData  # type:ignore
 from my_model.user_scoped_models import User  # type:ignore
 from rich.console import Console
 
 from .exceptions import GenericCLIException
-from .globals import config
+from .globals import config, get_global_data_object
 from .style import table_factory
 
 app = typer.Typer(no_args_is_help=True)
@@ -35,10 +34,8 @@ def retrieve() -> None:
     console = Console()
     logger.info('Using config "%s"', config.active_context.name)
 
-    # TODO: duplicate code; move to function
     logger.debug('Creating MyData object')
-    data = MyData()
-    data.configure(db_connection_str=config.active_context.db_string)
+    data = get_global_data_object()
 
     user = None
     if any((
@@ -82,7 +79,7 @@ def retrieve() -> None:
 
 @app.command()
 def set_password(username: str) -> None:
-    """Set the password for a specific user
+    """Set the password for a specific user.
 
     Resets the password for any user to a new password.
 
@@ -96,10 +93,8 @@ def set_password(username: str) -> None:
     logger = getLogger('users-set-password')
     logger.info('Using config "%s"', config.active_context.name)
 
-    # TODO: duplicate code; move to function
     logger.debug('Creating MyData object')
-    data = MyData()
-    data.configure(db_connection_str=config.active_context.db_string)
+    data = get_global_data_object()
 
     user = None
     if any((
