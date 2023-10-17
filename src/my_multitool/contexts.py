@@ -19,7 +19,14 @@ app = typer.Typer(no_args_is_help=True)
 
 
 @app.command(name='create')
-def create(name: str, db_string: str, warning: bool = False) -> None:
+def create(
+    name: str,
+    db_string: str,
+    warning: bool = False,
+    service_user: str | None = None,
+    service_pass: str | None = None,
+    root_user: str | None = None,
+) -> None:
     """Create a context.
 
     Creates a Context to use with the CLI app.
@@ -29,6 +36,9 @@ def create(name: str, db_string: str, warning: bool = False) -> None:
         db_string: the string for the database connection.
         warning: if the context should generate a warning before running
             anything.
+        service_user: the service user to use when connecting to this instance.
+        service_pass: the password for the service user.
+        root_user: the username of a root user to use when working with users.
 
     Raises:
         GenericCLIException: when there is already a context with this name.
@@ -39,7 +49,13 @@ def create(name: str, db_string: str, warning: bool = False) -> None:
         raise GenericCLIException(
             f'Context with name "{name}" already exists')
     config.config.contexts.append(
-        ContextModel(name=name, db_string=db_string, warning=warning))
+        ContextModel(
+            name=name,
+            db_string=db_string,
+            warning=warning,
+            service_user=service_user,
+            service_pass=service_pass,
+            root_user=root_user))
     config.save()
     console.print(f'Context with name "{name}" is created')
 
@@ -57,6 +73,8 @@ def retrieve() -> None:
     table.add_column('Name')
     table.add_column('Database string')
     table.add_column('Warning')
+    table.add_column('Service user')
+    table.add_column('Root user')
 
     for name, context in contexts.items():
         active = ''
@@ -66,7 +84,10 @@ def retrieve() -> None:
                 active = '*'
             warning = '*' if context.warning else ''
         table.add_row(active, f'{name}',
-                      context.db_string_with_masked_pwd, warning)
+                      context.db_string_with_masked_pwd,
+                      warning,
+                      context.service_user,
+                      context.root_user)
     console.print(table)
 
 
@@ -74,7 +95,11 @@ def retrieve() -> None:
 def update(name: str,
            new_name: str | None = None,
            db_string: str | None = None,
-           warning: bool | None = None):
+           warning: bool | None = None,
+           service_user: str | None = None,
+           service_pass: str | None = None,
+           root_user: str | None = None,
+           ) -> None:
     """Update a configured context.
 
     Updates a configured context.
@@ -102,6 +127,12 @@ def update(name: str,
             selected_context.db_string = db_string
         if warning is not None:
             selected_context.warning = warning
+        if service_user is not None:
+            selected_context.service_user = service_user
+        if service_pass is not None:
+            selected_context.service_pass = service_pass
+        if root_user is not None:
+            selected_context.root_user = root_user
 
         config.save()
         console.print(f'Context with name "{name}" is updated')
