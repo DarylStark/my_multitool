@@ -8,11 +8,10 @@ from logging import getLogger
 import typer
 from my_data.exceptions import UnknownUserAccountException  # type:ignore
 from my_model.user_scoped_models import User  # type:ignore
-from rich.console import Console
 
 from .exceptions import GenericCLIException
 from .globals import config, get_global_data_object
-from .style import table_factory
+from .style import get_table, ConsoleFactory
 
 app = typer.Typer(no_args_is_help=True)
 
@@ -31,7 +30,7 @@ def retrieve() -> None:
             active context.
     """
     logger = getLogger('users-list')
-    console = Console()
+    console = ConsoleFactory.get_console()
     logger.info('Using config "%s"', config.active_context.name)
 
     logger.debug('Creating MyData object')
@@ -60,7 +59,7 @@ def retrieve() -> None:
     if user:
         with data.get_context(user=user) as context:
             users = context.users.retrieve()
-            table = table_factory()
+            table = get_table()
             table.add_column('#')
             table.add_column('Fullname')
             table.add_column('Username')
