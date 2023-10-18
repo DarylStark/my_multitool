@@ -5,9 +5,9 @@ Exposes the `database` commands for the CLI app.
 from logging import getLogger
 
 import typer
-from rich.console import Console
 
 from .globals import config, get_global_data_object
+from .style import ConsoleFactory
 
 app = typer.Typer(no_args_is_help=True)
 
@@ -28,7 +28,7 @@ def create(echo_sql: bool = False,
         create_data: if set to True, testdata will be created.
     """
     logger = getLogger('database-create')
-    console = Console()
+    console = ConsoleFactory.get_console()
     logger.info('Using config "%s"', config.active_context.name)
 
     if config.active_context.warning:

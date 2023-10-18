@@ -7,15 +7,16 @@ import logging
 import sys
 
 import typer
+from my_data.exceptions import MyDataException
 from rich.logging import RichHandler
-from rich.console import Console
 
 from .contexts import app as contexts_app
 from .database import app as database_app
-from .users import app as users_app
 from .exceptions import (ConfigFileNotFoundException,
                          ConfigFileNotValidException, GenericCLIException)
 from .globals import config
+from .style import print_error
+from .users import app as users_app
 
 
 def main() -> None:
@@ -57,8 +58,9 @@ def main() -> None:
     try:
         app()
     except GenericCLIException as exception:
-        console = Console()
-        console.print(f'[red][b]Error:[/b] {exception}')
+        print_error(str(exception), prefix='CLI error')
+    except MyDataException as exception:
+        print_error(str(exception), prefix='MyData error')
 
 
 if __name__ == '__main__':

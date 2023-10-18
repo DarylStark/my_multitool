@@ -8,12 +8,11 @@ appropiate for the work you have to do.
 """
 
 import typer
-from rich.console import Console
 
 from .config import ContextModel
 from .exceptions import GenericCLIException
 from .globals import config
-from .style import table_factory
+from .style import get_table, ConsoleFactory
 
 app = typer.Typer(no_args_is_help=True)
 
@@ -43,7 +42,7 @@ def create(
     Raises:
         GenericCLIException: when there is already a context with this name.
     """
-    console = Console()
+    console = ConsoleFactory.get_console()
     contexts = config.contexts
     if name in contexts.keys():
         raise GenericCLIException(
@@ -66,9 +65,9 @@ def retrieve() -> None:
 
     Lists all configured contexts.
     """
-    console = Console()
+    console = ConsoleFactory.get_console()
     contexts = config.contexts
-    table = table_factory()
+    table = get_table()
     table.add_column('*')
     table.add_column('Name')
     table.add_column('Database string')
@@ -117,7 +116,7 @@ def update(name: str,
     Raises:
         GenericCLIException: when the given context doesn't exist.
     """
-    console = Console()
+    console = ConsoleFactory.get_console()
     contexts = config.contexts
     selected_context = contexts.get(name)
     if selected_context:
@@ -160,7 +159,7 @@ def delete(name: str) -> None:
     if config.config.active_context == name:
         raise GenericCLIException('Cannot remove active context')
 
-    console = Console()
+    console = ConsoleFactory.get_console()
     contexts = config.contexts
     if contexts.get(name):
         config.config.contexts = list(filter(
@@ -185,7 +184,7 @@ def use(context: str) -> None:
     Raises:
         GenericCLIException: when the selected context does not exists.
     """
-    console = Console()
+    console = ConsoleFactory.get_console()
     contexts = config.contexts
     if context in contexts.keys() and config.config:
         config.config.active_context = context
