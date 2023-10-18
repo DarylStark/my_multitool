@@ -7,7 +7,7 @@ import logging
 import sys
 
 import typer
-from my_data.exceptions import MyDataException
+from my_data.exceptions import MyDataException  # type:ignore
 from rich.logging import RichHandler
 
 from .contexts import app as contexts_app

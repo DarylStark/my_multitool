@@ -51,7 +51,7 @@ def print_error(message: str, prefix: str = 'Error') -> None:
 
     Args:
         message: the error message.
-        prefix the prefix for the error message.
+        prefix: the prefix for the error message.
     """
     console = ConsoleFactory.get_console()
     console.print(f'[red][b]{prefix}:[/b] {message}')
