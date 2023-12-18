@@ -3,8 +3,8 @@
 Exposes the `tool` commands for the CLI app.
 """
 import typer
-from my_data import __version__ as my_data_version # type:ignore
-from my_model import __version__ as my_model_version # type:ignore
+from my_data import __version__ as my_data_version  # type:ignore
+from my_model import __version__ as my_model_version  # type:ignore
 from pydantic import __version__ as pydantic_version
 from sqlalchemy import __version__ as sqlalchemy_version
 from sqlmodel import __version__ as sqlmodel_version
