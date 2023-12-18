@@ -16,6 +16,7 @@ from .exceptions import (ConfigFileNotFoundException,
                          ConfigFileNotValidException, GenericCLIException)
 from .globals import config
 from .style import print_error
+from .tool import app as tool_app
 from .users import app as users_app
 
 
@@ -53,6 +54,7 @@ def main() -> None:
     app.add_typer(database_app, name='database', help='Database management')
     app.add_typer(contexts_app, name='contexts', help='Context management')
     app.add_typer(users_app, name='users', help='User management')
+    app.add_typer(tool_app, name='tool', help='Tool management')
 
     # Run the Typer app
     try:
