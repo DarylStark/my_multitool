@@ -7,17 +7,49 @@ import logging
 import sys
 
 import typer
+from my_data import __version__ as my_data_version  # type:ignore
 from my_data.exceptions import MyDataException  # type:ignore
+from my_model import __version__ as my_model_version  # type:ignore
+from pydantic import __version__ as pydantic_version
 from rich.logging import RichHandler
+from sqlalchemy import __version__ as sqlalchemy_version
+from sqlmodel import __version__ as sqlmodel_version
+from typer import __version__ as typer_version
 
+from . import __version__ as my_multitool_version
 from .contexts import app as contexts_app
 from .database import app as database_app
 from .exceptions import (ConfigFileNotFoundException,
                          ConfigFileNotValidException, GenericCLIException)
 from .globals import config
-from .style import print_error
-from .tool import app as tool_app
+from .style import ConsoleFactory, get_table, print_error
 from .users import app as users_app
+
+# Create the Typer App
+app = typer.Typer(no_args_is_help=True)
+
+
+@app.command(name='version')
+def version() -> None:
+    """Display version information.
+
+    Shows version information for the tool and all related libraries.
+    """
+    console = ConsoleFactory.get_console()
+
+    table = get_table()
+    table.add_column('Library')
+    table.add_column('Version')
+
+    table.add_row('My Model', my_model_version)
+    table.add_row('My Data', my_data_version)
+    table.add_row('My Multitool', my_multitool_version)
+    table.add_row('Pydantic', pydantic_version)
+    table.add_row('SQLModel', sqlmodel_version)
+    table.add_row('SQLAlchemy', sqlalchemy_version)
+    table.add_row('Typer', typer_version)
+
+    console.print(table)
 
 
 def main() -> None:
@@ -47,14 +79,10 @@ def main() -> None:
         logging.error('Configurationfile not valid')
         sys.exit(1)
 
-    # Create the Typer App
-    app = typer.Typer(no_args_is_help=True)
-
     # Add subcommand's
     app.add_typer(database_app, name='database', help='Database management')
     app.add_typer(contexts_app, name='contexts', help='Context management')
     app.add_typer(users_app, name='users', help='User management')
-    app.add_typer(tool_app, name='tool', help='Tool management')
 
     # Run the Typer app
     try:
