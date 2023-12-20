@@ -52,6 +52,12 @@ def version() -> None:
     console.print(table)
 
 
+# Add subcommand's
+app.add_typer(database_app, name='database', help='Database management')
+app.add_typer(contexts_app, name='contexts', help='Context management')
+app.add_typer(users_app, name='users', help='User management')
+
+
 def main() -> None:
     """Entry point for the CLI script.
 
@@ -78,11 +84,6 @@ def main() -> None:
     except ConfigFileNotValidException:
         logging.error('Configurationfile not valid')
         sys.exit(1)
-
-    # Add subcommand's
-    app.add_typer(database_app, name='database', help='Database management')
-    app.add_typer(contexts_app, name='contexts', help='Context management')
-    app.add_typer(users_app, name='users', help='User management')
 
     # Run the Typer app
     try:
