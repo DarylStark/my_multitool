@@ -3,10 +3,12 @@
 Test the `version` command of the script.
 """
 
-from typer.testing import CliRunner
-from my_multitool.__main__ import app
-from my_multitool import __version__ as mymt_version
 import re
+
+from typer.testing import CliRunner
+
+from my_multitool import __version__ as mymt_version
+from my_multitool.__main__ import app
 
 runner = CliRunner(echo_stdin=True)
 
