@@ -52,6 +52,9 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
+        # We use Python 3.10 here because the tests fail on Python 3.11 due to a
+        # typing error. Not quite sure how that happens, but it looks like it is
+        # going to be solved in a updated version of Typer.
       - name: Setup Python 3.10
         uses: actions/setup-python@v4
         with:
