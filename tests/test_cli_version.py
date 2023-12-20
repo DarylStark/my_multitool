@@ -16,11 +16,12 @@ runner = CliRunner(echo_stdin=True)
 def test_version() -> None:
     """Run the `version` subcommand of the script.
 
-    Tests if we get the correct version back.
+    Tests if we get the correct version back and if the returncode for the
+    command is 0 (= no error).
     """
     result = runner.invoke(app, ['version'])
     assert result.exit_code == 0
     assert len(re.findall(
-        f'^\s*My Multitool\s+{mymt_version}\s+$',
+        r'^\s*My Multitool\s+' + mymt_version + r'\s+$',
         result.output,
         re.MULTILINE)) == 1
