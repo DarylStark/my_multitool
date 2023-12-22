@@ -12,11 +12,11 @@ class LoggingLevel(str, Enum):
     he wishes.
     """
 
-    debug = 'debug'
-    info = 'info'
-    warning = 'warning'
-    error = 'error'
-    fatal = 'fatal'
+    DEBUG = 'debug'
+    INFO = 'info'
+    WARNING = 'warning'
+    ERROR = 'error'
+    FATAL = 'fatal'
 
     def __int__(self) -> int:
         """Return the integer value for the chosen level.
