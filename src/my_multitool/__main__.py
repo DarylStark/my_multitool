@@ -17,14 +17,13 @@ from sqlmodel import __version__ as sqlmodel_version
 from typer import __version__ as typer_version
 
 from . import __version__ as my_multitool_version
-from .contexts import app as contexts_app
+from .cli_config import app as config_app
 from .database import app as database_app
 from .exceptions import (ConfigFileNotFoundException,
                          ConfigFileNotValidException, GenericCLIException)
 from .globals import config
 from .style import ConsoleFactory, get_table, print_error
 from .users import app as users_app
-from .models import LoggingLevel
 
 # Create the Typer App
 app = typer.Typer(no_args_is_help=True)
@@ -53,25 +52,10 @@ def version() -> None:
     console.print(table)
 
 
-@app.command(name='set-logging-level')
-def set_logging_level(level: LoggingLevel) -> None:
-    """Set logging level.
-
-    Sets the logging level for the application. This will be saved in the
-    configurationfile.
-    """
-    logger = logging.getLogger('set_logging_level')
-    console = ConsoleFactory.get_console()
-    logger.debug('Logging level "%s" is %d in integer', level, int(level))
-    config.config.logging_level = int(level)
-    config.save()
-    console.print('Logging level set')
-
-
 # Add subcommand's
 app.add_typer(database_app, name='database', help='Database management')
-app.add_typer(contexts_app, name='contexts', help='Context management')
 app.add_typer(users_app, name='users', help='User management')
+app.add_typer(config_app, name='config', help='Configuration for My Multitool')
 
 
 def main() -> None:
