@@ -24,6 +24,7 @@ from .exceptions import (ConfigFileNotFoundException,
 from .globals import config
 from .style import ConsoleFactory, get_table, print_error
 from .users import app as users_app
+from .models import LoggingLevel
 
 # Create the Typer App
 app = typer.Typer(no_args_is_help=True)
@@ -52,6 +53,21 @@ def version() -> None:
     console.print(table)
 
 
+@app.command(name='set-logging-level')
+def set_logging_level(level: LoggingLevel) -> None:
+    """Set logging level.
+
+    Sets the logging level for the application. This will be saved in the
+    configurationfile.
+    """
+    logger = logging.getLogger('set_logging_level')
+    console = ConsoleFactory.get_console()
+    logger.debug('Logging level "%s" is %d in integer', level, int(level))
+    config.config.logging_level = int(level)
+    config.save()
+    console.print('Logging level set')
+
+
 # Add subcommand's
 app.add_typer(database_app, name='database', help='Database management')
 app.add_typer(contexts_app, name='contexts', help='Context management')
@@ -64,7 +80,6 @@ def main() -> None:
     Defines the commands for the CLI script and makes sure the correct
     functions get called when running a specific CLI command.
     """
-
     # Load the configurationfile
     config.configure('~/.my_multitool_config.yaml')
     try:
