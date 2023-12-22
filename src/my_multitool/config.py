@@ -72,6 +72,7 @@ class ConfigModel(BaseModel):
 
     active_context: str
     contexts: list[ContextModel] = []
+    logging_level: int = 20
 
     class Config:
         """Configuration for the model.

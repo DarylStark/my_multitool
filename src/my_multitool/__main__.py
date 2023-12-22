@@ -64,26 +64,26 @@ def main() -> None:
     Defines the commands for the CLI script and makes sure the correct
     functions get called when running a specific CLI command.
     """
-    # Configure logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(message)s",
-        datefmt="[%X]",
-        handlers=[RichHandler()])
-    logger = logging.getLogger('MAIN')
 
     # Load the configurationfile
     config.configure('~/.my_multitool_config.yaml')
     try:
         config.load()
     except ConfigFileNotFoundException:
-        logger.warning(
-            'Configurationfile did not exist. Creating default configuration.')
         config.set_default_config()
         config.save()
     except ConfigFileNotValidException:
         logging.error('Configurationfile not valid')
         sys.exit(1)
+
+    # Configure logging
+    logging.basicConfig(
+        level=config.config.logging_level,
+        format="%(message)s",
+        datefmt="[%X]",
+        handlers=[RichHandler()])
+    logger = logging.getLogger('MAIN')
+    logger.debug('Logging is configured!')
 
     # Run the Typer app
     try:
