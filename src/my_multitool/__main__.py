@@ -73,7 +73,7 @@ def main() -> None:
         config.set_default_config()
         config.save()
     except ConfigFileNotValidException:
-        logging.error('Configurationfile not valid')
+        print_error('Configurationfile not valid', prefix='Configuration')
         sys.exit(1)
 
     # Configure logging
