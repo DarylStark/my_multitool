@@ -75,5 +75,17 @@
             "justMyCode": true,
             "cwd": "${workspaceFolder}/src"
         },
+        {
+            "name": "Debug CLI script - Set logging level",
+            "type": "python",
+            "request": "launch",
+            "module": "my_multitool",
+            "args": [
+                "set-logging-level",
+                "info"
+            ],
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/src"
+        },
     ]
 }

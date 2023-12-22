@@ -13,9 +13,9 @@ When starting the application for the first time, a default context with the nam
 
 .. code-block::
 
-    ~ $ my-multitool contexts --help
+    ~ $ my-multitool config contexts --help
                                                                                                                                                                 
-     Usage: my-multitool contexts [OPTIONS] COMMAND [ARGS]...                                                                                             
+     Usage: my-multitool config contexts [OPTIONS] COMMAND [ARGS]...                                                                                             
                                                                                                                                                                     
      Context management                                                                                                                                             
                                                                                                                                                                     
@@ -39,7 +39,7 @@ To list all configured contexts, you use the ``list`` command in the ``contexts`
 
 .. code-block::
 
-    ~ $ my-multitool contexts list
+    ~ $ my-multitool config contexts list
                                     
       *   Name      Database string                    Warning
      ───────────────────────────────────────────────────────────
@@ -57,7 +57,7 @@ After creating the context, you can see it with the ``contexts list`` command.
 
 .. code-block::
 
-    ~ $ my-multitool contexts create my_context sqlite:///home/vscode/db.sql
+    ~ $ my-multitool config contexts create my_context sqlite:///home/vscode/db.sql
     Context with name "my_context" is created
 
 You can also specify a ``--service-user``, ``--service-pass`` and ``--root-user`` to define credentials within the context that should be used for working with users in the database.
@@ -79,14 +79,14 @@ For example, to rename the context with name ``my_context`` to ``test_context``,
 
 .. code-block::
 
-    ~ $ my-multitool contexts set my_context --new-name test_context
+    ~ $ my-multitool config contexts set my_context --new-name test_context
     Context with name "my_context" is updated
 
 To update the database string for the context:
 
 .. code-block::
 
-    ~ $ my-multitool contexts set test_context --db-string sqlite:///:memory:/
+    ~ $ my-multitool config contexts set test_context --db-string sqlite:///:memory:/
     Context with name "my_context" is updated
 
 Deleting a Context
@@ -96,7 +96,7 @@ Deleting a Context can be done with the ``delete`` command from the ``contexts``
 
 .. code-block::
 
-    ~ $ my-multitool contexts delete test_context
+    ~ $ my-multitool config contexts delete test_context
     Context with name "test_context" is deleted
 
 Selecting a Context for use
@@ -106,7 +106,7 @@ Once you created a context, you can select it for use. That means that all actio
 
 .. code-block::
 
-    ~ $ my-multitool contexts use test_context
+    ~ $ my-multitool config contexts use test_context
     Now using "test_context"
 
 If you look at the list of configured context after selecting a new context, it will be marked with a asterisk.

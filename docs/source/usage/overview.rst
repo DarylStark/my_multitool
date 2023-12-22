@@ -16,15 +16,15 @@ This package is meant to be used as a CLI script. After installation, it is star
     │ --help                                                       Show this message and exit.                                                                     │
     ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
     ╭─ Commands ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-    │ contexts                                                                 Context management                                                                  │
-    │ database                                                                 Database management                                                                 │
-    │ users                                                                    User management                                                                     │
-    │ version                                                                  Display version information.                                                        │
+    │ config                                         Configuration for My Multitool                                                                                │
+    │ database                                       Database management                                                                                           │
+    │ users                                          User management                                                                                               │
+    │ version                                        Display version information.                                                                                  │
     ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 
 As you can see in the overview, you can install command completion with the ``--install-completion`` and ``--show-completion`` scripts. The ``contexts`` and ``database`` subcommands can be used for specific tasks:
 
--   ``contexts``: manage configuration contexts for the CLI script. Read more about this on the page about `Contexts <contexts.html>`_.
+-   ``config``: manage the configurationfor the CLI script. Read more about this on the page about `Config <config.html>`_.
 -   ``database``: manage a database in the current context. Read more about this on the page about `Databases <databases.html>`_.
 -   ``users``: manage the users in the database. Read more about this on the page about `Users <users.html>`_.
 -   ``version``: display the version of this tool and the used libraries.

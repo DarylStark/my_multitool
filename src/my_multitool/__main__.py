@@ -17,7 +17,7 @@ from sqlmodel import __version__ as sqlmodel_version
 from typer import __version__ as typer_version
 
 from . import __version__ as my_multitool_version
-from .contexts import app as contexts_app
+from .cli_config import app as config_app
 from .database import app as database_app
 from .exceptions import (ConfigFileNotFoundException,
                          ConfigFileNotValidException, GenericCLIException)
@@ -54,8 +54,8 @@ def version() -> None:
 
 # Add subcommand's
 app.add_typer(database_app, name='database', help='Database management')
-app.add_typer(contexts_app, name='contexts', help='Context management')
 app.add_typer(users_app, name='users', help='User management')
+app.add_typer(config_app, name='config', help='Configuration for My Multitool')
 
 
 def main() -> None:
@@ -64,26 +64,25 @@ def main() -> None:
     Defines the commands for the CLI script and makes sure the correct
     functions get called when running a specific CLI command.
     """
-    # Configure logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(message)s",
-        datefmt="[%X]",
-        handlers=[RichHandler()])
-    logger = logging.getLogger('MAIN')
-
     # Load the configurationfile
     config.configure('~/.my_multitool_config.yaml')
     try:
         config.load()
     except ConfigFileNotFoundException:
-        logger.warning(
-            'Configurationfile did not exist. Creating default configuration.')
         config.set_default_config()
         config.save()
     except ConfigFileNotValidException:
-        logging.error('Configurationfile not valid')
+        print_error('Configurationfile not valid', prefix='Configuration')
         sys.exit(1)
+
+    # Configure logging
+    logging.basicConfig(
+        level=config.config.logging_level,
+        format="%(message)s",
+        datefmt="[%X]",
+        handlers=[RichHandler()])
+    logger = logging.getLogger('MAIN')
+    logger.debug('Logging is configured!')
 
     # Run the Typer app
     try:
