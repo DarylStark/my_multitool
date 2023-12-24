@@ -61,4 +61,4 @@ push = false
 "src/my_multitool/__init__.py" = ["{version}"]
 
 [tool.pytest.ini_options]
-pythonpath = ['./src/', './tests/']
+addopts = ['-v', '--cov=my_multitool', '--cov-report=html']
