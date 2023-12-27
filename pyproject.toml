@@ -62,4 +62,4 @@ push = false
 "src/my_multitool/__init__.py" = ["{version}"]
 
 [tool.pytest.ini_options]
-addopts = ['-v', '--cov=my_multitool', '--cov-report=html', '--cov-report=lcov']
+addopts = ['--cov=my_multitool', '--cov-report=html', '--cov-report=lcov']

@@ -174,9 +174,6 @@ class ConfigManager:
             value the ContextModel instance for the context or, if the config
             is not set; None.
         """
-        if getattr(self, 'config', None) is None:
-            self.load()
-
         return {
             context.name: context for context in self.config.contexts
         }
@@ -190,8 +187,6 @@ class ConfigManager:
         Returns:
             The ConfigModel.
         """
-        if getattr(self, 'config', None) is None:
-            self.load()
         return self.config
 
     @property
@@ -203,6 +198,4 @@ class ConfigManager:
         Returns:
             The ContextModel for the active context.
         """
-        if getattr(self, 'config', None) is None:
-            self.load()
         return self.contexts[self.config.active_context]

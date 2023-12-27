@@ -5,7 +5,7 @@ import os
 import pytest
 
 from my_multitool.config import ConfigManager
-from my_multitool.exceptions import ConfigFileNotFoundException
+from my_multitool.exceptions import ConfigFileNotFoundException, ConfigFileNotValidException, NoConfigToSaveException
 
 
 @pytest.mark.parametrize('attribute, expected_value', [
@@ -74,3 +74,55 @@ def test_loading_config_after_removing_the_file(config_object: ConfigManager) ->
     os.remove(file)
     with pytest.raises(ConfigFileNotFoundException):
         config_object.load()
+
+
+def test_loading_config_with_incorrect_value(config_object: ConfigManager) -> None:
+    """Check if we get an error when loading with a invalid value.
+
+    Args:
+        config_object: fixture for the config object.
+    """
+    config_object.config.active_context = 10
+    config_object.save()
+    with pytest.raises(ConfigFileNotValidException):
+        config_object.load()
+
+
+def test_saving_config_without_a_config(config_object: ConfigManager) -> None:
+    """Save the config without a config.
+
+    Args:
+        config_object: fixture for the config object.
+    """
+    config_object.config = None
+    with pytest.raises(NoConfigToSaveException):
+        config_object.save()
+
+
+def test_saving_config_without_a_yaml_file(config_object: ConfigManager) -> None:
+    """Save the config without a YAML file.
+
+    Args:
+        config_object: fixture for the config object.
+    """
+    config_object.yaml_file = ''
+    with pytest.raises(NoConfigToSaveException):
+        config_object.save()
+
+
+def test_retrieving_full_config(config_object: ConfigManager) -> None:
+    """Check if the retrieved full_config is correct.
+
+    Args:
+        config_object: fixture for the config object.
+    """
+    assert config_object.full_config is config_object.config
+
+
+def test_retrieving_active_context(config_object: ConfigManager) -> None:
+    """Check if the retrieved active_context is correct.
+
+    Args:
+        config_object: fixture for the config object.
+    """
+    assert config_object.active_context is config_object.active_context
