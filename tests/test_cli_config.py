@@ -3,16 +3,14 @@
 Test the `config contexts` command of the script.
 """
 
-from logging import root
-from multiprocessing import context
+import logging
 import re
+
+import pytest
 from typer.testing import CliRunner
 
 from my_multitool.__main__ import app
 from my_multitool.config import ConfigManager
-
-import pytest
-
 from my_multitool.exceptions import GenericCLIException
 
 runner = CliRunner(echo_stdin=True)
@@ -282,7 +280,7 @@ def test_context_rename_active_context(config_object: ConfigManager) -> None:
     assert config_object.full_config.active_context == 'new_name_for_context'
 
 
-def test_context_updating_non_existing_context(config_object) -> None:
+def test_context_updating_non_existing_context(config_object: ConfigManager) -> None:
     """Edit a non-existing context to see if we get an error.
 
     Args:
@@ -298,7 +296,7 @@ def test_context_updating_non_existing_context(config_object) -> None:
     assert isinstance(result.exception, GenericCLIException)
 
 
-def test_context_deleting_non_existing_context(config_object) -> None:
+def test_context_deleting_non_existing_context(config_object: ConfigManager) -> None:
     """Delete a non-existing context to see if we get an error.
 
     Args:
@@ -312,3 +310,27 @@ def test_context_deleting_non_existing_context(config_object) -> None:
     ])
     assert result.exit_code != 0
     assert isinstance(result.exception, GenericCLIException)
+
+
+@pytest.mark.parametrize('level_string, level_value', [
+    ('debug', logging.DEBUG),
+    ('info', logging.INFO),
+    ('warning', logging.WARNING),
+    ('error', logging.ERROR),
+    ('fatal', logging.FATAL)
+])
+def test_set_logging_level(config_object: ConfigManager, level_string: str, level_value: int) -> None:
+    """Set a logging level.
+
+    Set the logging level and check if it is updated.
+
+    Args:
+        config_object: fixture for the config object.
+    """
+    result = runner.invoke(app, [
+        'config',
+        'set-logging-level',
+        level_string
+    ])
+    assert result.exit_code == 0
+    assert config_object.full_config.logging_level == level_value
