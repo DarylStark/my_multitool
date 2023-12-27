@@ -177,7 +177,7 @@ def test_context_delete(config_object: ConfigManager, context_name: str) -> None
     assert context_name not in config_object.contexts.keys()
 
 
-def test_delete_active_context(config_object: ConfigManager) -> None:
+def test_context_delete_active_context(config_object: ConfigManager) -> None:
     """Test is we get an error when deleting the active context.
 
     Args:
@@ -202,7 +202,7 @@ def test_delete_active_context(config_object: ConfigManager) -> None:
     ('context_01', 'sqlite:///test.db', None,
      None, None, 'root', 'context_01_new_name'),
 ])
-def test_context_update(
+def test_context_set(
     config_object: ConfigManager,
     name: str,
     db_string: str,
@@ -266,7 +266,7 @@ def test_context_update(
         assert config_object.contexts[name].root_user == root_user
 
 
-def test_rename_active_context(config_object: ConfigManager) -> None:
+def test_context_rename_active_context(config_object: ConfigManager) -> None:
     """Rename a active context.
 
     Check if the `active_context` property gets updates.
@@ -282,7 +282,7 @@ def test_rename_active_context(config_object: ConfigManager) -> None:
     assert config_object.full_config.active_context == 'new_name_for_context'
 
 
-def test_updating_non_existing_context(config_object) -> None:
+def test_context_updating_non_existing_context(config_object) -> None:
     """Edit a non-existing context to see if we get an error.
 
     Args:
@@ -298,7 +298,7 @@ def test_updating_non_existing_context(config_object) -> None:
     assert isinstance(result.exception, GenericCLIException)
 
 
-def test_deleting_non_existing_context(config_object) -> None:
+def test_context_deleting_non_existing_context(config_object) -> None:
     """Delete a non-existing context to see if we get an error.
 
     Args:
