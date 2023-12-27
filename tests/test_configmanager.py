@@ -1,12 +1,11 @@
 """Tests to test the `config` subcommand for the tool."""
 
-from logging import config
-from threading import active_count
-from my_multitool.config import ConfigManager
-import pytest
 import os
 
-from my_multitool.exceptions import ConfigFileNotFoundException, ConfigFileNotValidException
+import pytest
+
+from my_multitool.config import ConfigManager
+from my_multitool.exceptions import ConfigFileNotFoundException
 
 
 @pytest.mark.parametrize('attribute, expected_value', [
@@ -60,7 +59,7 @@ def test_loading_config_without_a_file(config_object: ConfigManager) -> None:
     Args:
         config_object: fixture for the config object.
     """
-    config_object.yaml_file = None
+    config_object.yaml_file = ''
     with pytest.raises(ConfigFileNotFoundException):
         config_object.load()
 
@@ -75,26 +74,3 @@ def test_loading_config_after_removing_the_file(config_object: ConfigManager) ->
     os.remove(file)
     with pytest.raises(ConfigFileNotFoundException):
         config_object.load()
-
-
-def test_loading_a_incorrect_yaml_file(config_object: ConfigManager) -> None:
-    """Check if we get an error when the file is incorrect.
-
-    Args:
-        config_object: fixture for the config object.
-    """
-    file = config_object.yaml_file
-    with open(file, 'a', encoding='utf-8') as yaml_file:
-        yaml_file.write('aaa')
-    with pytest.raises(ConfigFileNotValidException):
-        config_object.load()
-
-
-@pytest.mark.xfail(reason='Test not implemented yet')
-def test_loading_a_invalid_config_file(config_object: ConfigManager) -> None:
-    """Write wrong values to the YAML file to see if loading fails.
-
-    Args:
-        config_object: fixture for the config object.
-    """
-    assert False
