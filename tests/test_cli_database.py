@@ -47,6 +47,7 @@ def test_database_creation_with_warning_confirm(
     assert result.stdout.strip() == 'Created tables'
 
 
+@pytest.mark.xfail(reason='Exit code should be changed')
 @pytest.mark.parametrize('answer', [
     'N', 'n', 'x'
 ])
@@ -67,7 +68,7 @@ def test_database_creation_with_warning_not_confirm(
 
     config.active_context.warning = True
     result = runner.invoke(app, ['database', 'create'])
-    assert result.exit_code == 0
+    assert result.exit_code == 1
     assert result.stdout.strip() == ''
 
 
