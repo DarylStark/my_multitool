@@ -6,7 +6,7 @@ from typer.testing import CliRunner
 from my_multitool.__main__ import app
 from my_multitool.exceptions import GenericCLIException
 
-from my_model.user_scoped_models import User
+from unittest.mock import patch
 
 runner = CliRunner(echo_stdin=True)
 
@@ -104,6 +104,8 @@ def test_users_set_password(
         'my_multitool.users.get_global_data_object',
         lambda: data_object_with_database_with_root_user)
     monkeypatch.setattr('getpass.fallback_getpass', replacement_input)
+    monkeypatch.setattr('getpass.win_getpass', replacement_input)
+    monkeypatch.setattr('getpass.unix_getpass', replacement_input)
     result = runner.invoke(app, ['users', 'set-password', 'normal.user.1'])
     assert result.exit_code == 0
 
@@ -132,6 +134,8 @@ def test_users_set_password_empty_password(
         'my_multitool.users.get_global_data_object',
         lambda: data_object_with_database_with_root_user)
     monkeypatch.setattr('getpass.fallback_getpass', replacement_input)
+    monkeypatch.setattr('getpass.win_getpass', replacement_input)
+    monkeypatch.setattr('getpass.unix_getpass', replacement_input)
     result = runner.invoke(app, ['users', 'set-password', 'normal.user.1'])
     assert result.exit_code == 1
     assert isinstance(result.exception, GenericCLIException)
@@ -160,6 +164,8 @@ def test_users_set_password_inconsistent_passwords(
         'my_multitool.users.get_global_data_object',
         lambda: data_object_with_database_with_root_user)
     monkeypatch.setattr('getpass.fallback_getpass', replacement_input)
+    monkeypatch.setattr('getpass.win_getpass', replacement_input)
+    monkeypatch.setattr('getpass.unix_getpass', replacement_input)
     result = runner.invoke(app, ['users', 'set-password', 'normal.user.1'])
     assert result.exit_code == 1
     assert isinstance(result.exception, GenericCLIException)
