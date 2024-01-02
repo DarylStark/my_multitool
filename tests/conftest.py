@@ -94,3 +94,20 @@ def data_object_with_database_with_root_user(
     """
     config.active_context.root_user = 'root'
     return data_object_with_database_with_svc_user
+
+
+@pytest.fixture
+def data_object_with_database_with_wrong_root_user(
+        data_object_with_database_with_svc_user: MyData) -> MyData:
+    """Fixture for a global data object with a configured database, a svc user
+    and a wrongly configured root user.
+
+    Args:
+        data_object_with_database_with_svc_user: a data object with a
+            configured database, a service user and a wrong root user.
+
+    Returns:
+        The created MyData object.
+    """
+    config.active_context.root_user = 'wrong_root'
+    return data_object_with_database_with_svc_user

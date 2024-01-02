@@ -33,6 +33,23 @@ def test_users_retrieve_without_a_root_user(
     assert result.exit_code != 0
     assert isinstance(result.exception, GenericCLIException)
 
+def test_users_retrieve_with_a_wrong_root_user(
+        data_object_with_database_with_wrong_root_user: MyData,
+        monkeypatch) -> None:
+    """Test if we get an error when retrieving without a a valid root user.
+
+    Args:
+        data_object_with_database_with_wrong_root_user: a data object with a
+            configured database, a service user and a wrong root user.
+    """
+    # Mocking the `get_global_data_object` function makes sure we always get
+    # the same data object.
+    monkeypatch.setattr(
+        'my_multitool.users.get_global_data_object',
+        lambda: data_object_with_database_with_wrong_root_user)
+    result = runner.invoke(app, ['users', 'list'])
+    assert result.exit_code != 0
+    assert isinstance(result.exception, GenericCLIException)
 
 def test_users_retrieve(
         data_object_with_database_with_root_user: MyData,
@@ -76,6 +93,99 @@ def test_user_set_password_without_a_root_user(
     assert result.exit_code != 0
     assert isinstance(result.exception, GenericCLIException)
 
+def test_users_set_password_empty_password(
+        data_object_with_database_with_root_user: MyData,
+        monkeypatch) -> None:
+    """Test if we can reset the password for users.
+
+    Args:
+        data_object_with_database_with_root_user: a data object with a
+            configured database, a service user and a root user.
+        monkeypatch: the mocker.
+    """
+    def replacement_input(*args, **kwargs):
+        return ''
+
+    # Mocking the `get_global_data_object` function makes sure we always get
+    # the same data object.
+    monkeypatch.setattr(
+        'my_multitool.users.get_global_data_object',
+        lambda: data_object_with_database_with_root_user)
+    monkeypatch.setattr('getpass.getpass', replacement_input)
+    result = runner.invoke(app, ['users', 'set-password', 'normal.user.1'])
+    assert result.exit_code == 1
+    assert isinstance(result.exception, GenericCLIException)
+
+def test_users_set_password_with_a_wrong_root_user(
+        data_object_with_database_with_wrong_root_user: MyData,
+        monkeypatch) -> None:
+    """Test if we get an error when retrieving without a a valid root user.
+
+    Args:
+        data_object_with_database_with_wrong_root_user: a data object with a
+            configured database, a service user and a wrong root user.
+    """
+    # Mocking the `get_global_data_object` function makes sure we always get
+    # the same data object.
+    monkeypatch.setattr(
+        'my_multitool.users.get_global_data_object',
+        lambda: data_object_with_database_with_wrong_root_user)
+    result = runner.invoke(app, ['users', 'set-password', 'normal.user.1'])
+    assert result.exit_code != 0
+    assert isinstance(result.exception, GenericCLIException)
+
+
+def test_users_set_password_inconsistent_passwords(
+        data_object_with_database_with_root_user: MyData,
+        monkeypatch) -> None:
+    """Test if we can reset the password for users.
+
+    Args:
+        data_object_with_database_with_root_user: a data object with a
+            configured database, a service user and a root user.
+        monkeypatch: the mocker.
+    """
+    passwords = ['test', 'test1']
+
+    def replacement_input(*args, **kwargs):
+        password = passwords[0]
+        passwords.pop(0)
+        return password
+
+    # Mocking the `get_global_data_object` function makes sure we always get
+    # the same data object.
+    monkeypatch.setattr(
+        'my_multitool.users.get_global_data_object',
+        lambda: data_object_with_database_with_root_user)
+    monkeypatch.setattr('getpass.getpass', replacement_input)
+    result = runner.invoke(app, ['users', 'set-password', 'normal.user.1'])
+    assert result.exit_code == 1
+    assert isinstance(result.exception, GenericCLIException)
+
+
+def test_users_set_password_non_existing_user(
+        data_object_with_database_with_root_user: MyData,
+        monkeypatch) -> None:
+    """Test if we get an error when specifying a non-existing user.
+
+    Args:
+        data_object_with_database_with_root_user: a data object with a
+            configured database, a service user and a root user.
+        monkeypatch: the mocker.
+    """
+    def replacement_input(*args, **kwargs):
+        return 'test'
+
+    # Mocking the `get_global_data_object` function makes sure we always get
+    # the same data object.
+    monkeypatch.setattr(
+        'my_multitool.users.get_global_data_object',
+        lambda: data_object_with_database_with_root_user)
+    monkeypatch.setattr('getpass.getpass', replacement_input)
+    result = runner.invoke(app, ['users', 'set-password', 'non-existing'])
+    assert result.exit_code == 1
+    assert isinstance(result.exception, GenericCLIException)
+
 
 @pytest.mark.parametrize('password', [
     'testpw', 'TeStPW', 'my_test_pw', 'very long password',
@@ -112,53 +222,3 @@ def test_users_set_password(
     assert user_account.verify_credentials('normal.user.1', password)
 
 
-def test_users_set_password_empty_password(
-        data_object_with_database_with_root_user: MyData,
-        monkeypatch) -> None:
-    """Test if we can reset the password for users.
-
-    Args:
-        data_object_with_database_with_root_user: a data object with a
-            configured database, a service user and a root user.
-        monkeypatch: the mocker.
-    """
-    def replacement_input(*args, **kwargs):
-        return ''
-
-    # Mocking the `get_global_data_object` function makes sure we always get
-    # the same data object.
-    monkeypatch.setattr(
-        'my_multitool.users.get_global_data_object',
-        lambda: data_object_with_database_with_root_user)
-    monkeypatch.setattr('getpass.getpass', replacement_input)
-    result = runner.invoke(app, ['users', 'set-password', 'normal.user.1'])
-    assert result.exit_code == 1
-    assert isinstance(result.exception, GenericCLIException)
-
-
-def test_users_set_password_inconsistent_passwords(
-        data_object_with_database_with_root_user: MyData,
-        monkeypatch) -> None:
-    """Test if we can reset the password for users.
-
-    Args:
-        data_object_with_database_with_root_user: a data object with a
-            configured database, a service user and a root user.
-        monkeypatch: the mocker.
-    """
-    passwords = ['test', 'test1']
-
-    def replacement_input(*args, **kwargs):
-        password = passwords[0]
-        passwords.pop(0)
-        return password
-
-    # Mocking the `get_global_data_object` function makes sure we always get
-    # the same data object.
-    monkeypatch.setattr(
-        'my_multitool.users.get_global_data_object',
-        lambda: data_object_with_database_with_root_user)
-    monkeypatch.setattr('getpass.getpass', replacement_input)
-    result = runner.invoke(app, ['users', 'set-password', 'normal.user.1'])
-    assert result.exit_code == 1
-    assert isinstance(result.exception, GenericCLIException)
