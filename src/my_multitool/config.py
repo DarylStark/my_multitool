@@ -8,7 +8,7 @@ import re
 from os.path import expanduser
 
 import yaml
-from pydantic import BaseModel, Extra, ValidationError
+from pydantic import BaseModel, ConfigDict, ValidationError
 
 from .exceptions import (ConfigFileNotFoundException,
                          ConfigFileNotValidException, NoConfigToSaveException)
@@ -24,6 +24,10 @@ class ContextModel(BaseModel):
         db_string: the database connection string for the context.
         warning: determines if a warning should be given
     """
+    # We disallow extra fields. This makes sure the user cannot specify
+    # fields that are not defined. This results in a more robust
+    # configuration.
+    model_config = ConfigDict(extra='forbid')
 
     name: str
     db_string: str
@@ -31,16 +35,6 @@ class ContextModel(BaseModel):
     service_user: str | None = None
     service_pass: str | None = None
     root_user: str | None = None
-
-    class Config:
-        """Configuration for the model.
-
-        We disallow extra fields. This makes sure the user cannot specify
-        fields that are not defined. This results in a more robust
-        configuration.
-        """
-
-        extra = Extra.forbid
 
     @property
     def db_string_with_masked_pwd(self) -> str:
@@ -70,19 +64,14 @@ class ConfigModel(BaseModel):
         contexts: a list with configured contexts.
     """
 
+    # We disallow extra fields. This makes sure the user cannot specify
+    # fields that are not defined. This results in a more robust
+    # configuration.
+    model_config = ConfigDict(extra='forbid')
+
     active_context: str
     contexts: list[ContextModel] = []
     logging_level: int = 20
-
-    class Config:
-        """Configuration for the model.
-
-        We disallow extra fields. This makes sure the user cannot specify
-        fields that are not defined. This results in a more robust
-        configuration.
-        """
-
-        extra = Extra.forbid
 
 
 class ConfigManager:
@@ -148,7 +137,7 @@ class ConfigManager:
         """
         if self.config and self.yaml_file:
             with open(self.yaml_file, 'w', encoding='utf-8') as output_file:
-                yaml.dump(self.config.dict(), output_file)
+                yaml.dump(self.config.model_dump(), output_file)
         else:
             raise NoConfigToSaveException('Configuration not set yet')
 

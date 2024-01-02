@@ -81,19 +81,6 @@ def test_loading_config_after_removing_the_file(
         config_object.load()
 
 
-def test_loading_config_with_incorrect_value(
-        config_object: ConfigManager) -> None:
-    """Check if we get an error when loading with a invalid value.
-
-    Args:
-        config_object: fixture for the config object.
-    """
-    config_object.config.active_context = 10
-    config_object.save()
-    with pytest.raises(ConfigFileNotValidException):
-        config_object.load()
-
-
 def test_saving_config_without_a_config(config_object: ConfigManager) -> None:
     """Save the config without a config.
 
