@@ -1,4 +1,3 @@
-import pathlib
 
 import pytest
 from my_data.my_data import MyData
