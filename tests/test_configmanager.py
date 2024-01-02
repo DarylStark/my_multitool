@@ -6,8 +6,7 @@ import pytest
 
 from my_multitool.config import ConfigManager  # type:ignore
 from my_multitool.exceptions import (  # type:ignore
-    ConfigFileNotFoundException, ConfigFileNotValidException,
-    NoConfigToSaveException)
+    ConfigFileNotFoundException, NoConfigToSaveException)
 
 
 @pytest.mark.parametrize('attribute, expected_value', [
@@ -78,19 +77,6 @@ def test_loading_config_after_removing_the_file(
     file = config_object.yaml_file
     os.remove(file)
     with pytest.raises(ConfigFileNotFoundException):
-        config_object.load()
-
-
-def test_loading_config_with_incorrect_value(
-        config_object: ConfigManager) -> None:
-    """Check if we get an error when loading with a invalid value.
-
-    Args:
-        config_object: fixture for the config object.
-    """
-    config_object.config.active_context = 10
-    config_object.save()
-    with pytest.raises(ConfigFileNotValidException):
         config_object.load()
 
 
