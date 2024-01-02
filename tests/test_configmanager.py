@@ -4,8 +4,10 @@ import os
 
 import pytest
 
-from my_multitool.config import ConfigManager
-from my_multitool.exceptions import ConfigFileNotFoundException, ConfigFileNotValidException, NoConfigToSaveException
+from my_multitool.config import ConfigManager  # type:ignore
+from my_multitool.exceptions import (  # type:ignore
+    ConfigFileNotFoundException, ConfigFileNotValidException,
+    NoConfigToSaveException)
 
 
 @pytest.mark.parametrize('attribute, expected_value', [
@@ -35,8 +37,10 @@ def test_masked_password(config_object: ConfigManager) -> None:
     Args:
         config_object: fixture for the config object.
     """
-    config_object.active_context.db_string = 'mysql+pymysql://username:password@sql.cloud.nl/database'
-    assert config_object.active_context.db_string_with_masked_pwd == 'mysql+pymysql://username:***@sql.cloud.nl/database'
+    config_object.active_context.db_string = \
+        'mysql+pymysql://username:password@sql.cloud.nl/database'
+    assert config_object.active_context.db_string_with_masked_pwd == \
+        'mysql+pymysql://username:***@sql.cloud.nl/database'
 
 
 def test_loading_config_from_file(config_object: ConfigManager) -> None:
@@ -64,7 +68,8 @@ def test_loading_config_without_a_file(config_object: ConfigManager) -> None:
         config_object.load()
 
 
-def test_loading_config_after_removing_the_file(config_object: ConfigManager) -> None:
+def test_loading_config_after_removing_the_file(
+        config_object: ConfigManager) -> None:
     """Check if we get an error when the error file is removed.
 
     Args:
@@ -76,7 +81,8 @@ def test_loading_config_after_removing_the_file(config_object: ConfigManager) ->
         config_object.load()
 
 
-def test_loading_config_with_incorrect_value(config_object: ConfigManager) -> None:
+def test_loading_config_with_incorrect_value(
+        config_object: ConfigManager) -> None:
     """Check if we get an error when loading with a invalid value.
 
     Args:
@@ -99,7 +105,8 @@ def test_saving_config_without_a_config(config_object: ConfigManager) -> None:
         config_object.save()
 
 
-def test_saving_config_without_a_yaml_file(config_object: ConfigManager) -> None:
+def test_saving_config_without_a_yaml_file(
+        config_object: ConfigManager) -> None:
     """Save the config without a YAML file.
 
     Args:

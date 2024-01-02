@@ -9,9 +9,9 @@ import re
 import pytest
 from typer.testing import CliRunner
 
-from my_multitool.__main__ import app
-from my_multitool.config import ConfigManager
-from my_multitool.exceptions import GenericCLIException
+from my_multitool.__main__ import app  # type:ignore
+from my_multitool.config import ConfigManager  # type:ignore
+from my_multitool.exceptions import GenericCLIException  # type:ignore
 
 runner = CliRunner(echo_stdin=True)
 
@@ -29,16 +29,17 @@ def test_context_list(config_object: ConfigManager) -> None:
     assert result.exit_code == 0
     for name, context in config_object.contexts.items():
         assert len(re.findall(
-            f'{name}\s+{context.db_string}', result.stdout)) == 1
+            rf'{name}\s+{context.db_string}', result.stdout)) == 1
 
 
-@pytest.mark.parametrize('name, db_string, warning, service_user, service_pass, root_user', [
-    ('test1', 'sqlite:///test.db', None, None, None, None),
-    ('test2', 'sqlite:///test.db', True, None, None, None),
-    ('test3', 'sqlite:///test.db', False, None, None, None),
-    ('test4', 'sqlite:///test.db', None, 'svc_user', 'svc_pass', None),
-    ('test5', 'sqlite:///test.db', None, None, None, 'root'),
-])
+@pytest.mark.parametrize(
+    'name, db_string, warning, service_user, service_pass, root_user', [
+        ('test1', 'sqlite:///test.db', None, None, None, None),
+        ('test2', 'sqlite:///test.db', True, None, None, None),
+        ('test3', 'sqlite:///test.db', False, None, None, None),
+        ('test4', 'sqlite:///test.db', None, 'svc_user', 'svc_pass', None),
+        ('test5', 'sqlite:///test.db', None, None, None, 'root'),
+    ])
 def test_context_creation(
     config_object: ConfigManager,
     name: str,
@@ -93,7 +94,9 @@ def test_context_creation(
     assert config_object.contexts[name].root_user == root_user
 
 
-def test_context_creation_existing_context(config_object: ConfigManager) -> None:
+def test_context_creation_existing_context(
+        config_object: ConfigManager  # pylint: disable=unused-argument
+) -> None:
     """Test adding duplicate contexts.
 
     Create a context that already exists and check if we get an error.
@@ -124,6 +127,7 @@ def test_context_use(config_object: ConfigManager, context_name: str) -> None:
 
     Args:
         config_object: fixture for the config object.
+        context_name: the context name to test.
     """
     result = runner.invoke(app, [
         'config',
@@ -136,7 +140,9 @@ def test_context_use(config_object: ConfigManager, context_name: str) -> None:
     assert config_object.full_config.active_context == context_name
 
 
-def test_context_use_wrong_context(config_object: ConfigManager) -> None:
+def test_context_use_wrong_context(
+        config_object: ConfigManager  # pylint: disable=unused-argument
+) -> None:
     """Test is we get an error when chaning to a non existing context.
 
     Args:
@@ -159,11 +165,13 @@ def test_context_use_wrong_context(config_object: ConfigManager) -> None:
     'context_04',
     'context_05'
 ])
-def test_context_delete(config_object: ConfigManager, context_name: str) -> None:
+def test_context_delete(
+        config_object: ConfigManager, context_name: str) -> None:
     """Test is we can delete contexts.
 
     Args:
         config_object: fixture for the config object.
+        context_name: the context name to test.
     """
     result = runner.invoke(app, [
         'config',
@@ -191,17 +199,20 @@ def test_context_delete_active_context(config_object: ConfigManager) -> None:
     assert isinstance(result.exception, GenericCLIException)
 
 
-@pytest.mark.parametrize('name, db_string, warning, service_user, service_pass, root_user, new_name', [
-    ('context_01', 'sqlite:///test.db', None, None, None, None, None),
-    ('context_02', 'sqlite:///test.db', True, None, None, None, None),
-    ('context_03', 'sqlite:///test.db', False, None, None, None, None),
-    ('context_04', 'sqlite:///test.db', None, 'svc_user', 'svc_pass', None, None),
-    ('context_05', 'sqlite:///test.db', None, None, None, 'root', None),
-    ('context_01', 'sqlite:///test.db', None,
-     None, None, 'root', 'context_01_new_name'),
-])
-def test_context_set(
-    config_object: ConfigManager,
+@pytest.mark.parametrize(
+    'name, db_string, warning, service_user, ' +
+    'service_pass, root_user, new_name', [
+        ('context_01', 'sqlite:///test.db', None, None, None, None, None),
+        ('context_02', 'sqlite:///test.db', True, None, None, None, None),
+        ('context_03', 'sqlite:///test.db', False, None, None, None, None),
+        ('context_04', 'sqlite:///test.db', None,
+         'svc_user', 'svc_pass', None, None),
+        ('context_05', 'sqlite:///test.db', None, None, None, 'root', None),
+        ('context_01', 'sqlite:///test.db', None,
+         None, None, 'root', 'context_01_new_name'),
+    ])
+def test_context_set(  # pylint: disable=too-many-branches
+    config_object: ConfigManager,  # pylint: disable=unused-argument
     name: str,
     db_string: str,
     warning: bool | None,
@@ -280,7 +291,9 @@ def test_context_rename_active_context(config_object: ConfigManager) -> None:
     assert config_object.full_config.active_context == 'new_name_for_context'
 
 
-def test_context_updating_non_existing_context(config_object: ConfigManager) -> None:
+def test_context_updating_non_existing_context(
+        config_object: ConfigManager  # pylint: disable=unused-argument
+) -> None:
     """Edit a non-existing context to see if we get an error.
 
     Args:
@@ -296,7 +309,9 @@ def test_context_updating_non_existing_context(config_object: ConfigManager) -> 
     assert isinstance(result.exception, GenericCLIException)
 
 
-def test_context_deleting_non_existing_context(config_object: ConfigManager) -> None:
+def test_context_deleting_non_existing_context(
+        config_object: ConfigManager  # pylint: disable=unused-argument
+) -> None:
     """Delete a non-existing context to see if we get an error.
 
     Args:
@@ -319,13 +334,16 @@ def test_context_deleting_non_existing_context(config_object: ConfigManager) -> 
     ('error', logging.ERROR),
     ('fatal', logging.FATAL)
 ])
-def test_set_logging_level(config_object: ConfigManager, level_string: str, level_value: int) -> None:
+def test_set_logging_level(config_object: ConfigManager,
+                           level_string: str, level_value: int) -> None:
     """Set a logging level.
 
     Set the logging level and check if it is updated.
 
     Args:
         config_object: fixture for the config object.
+        level_string: the name for the level.
+        level_value: the integer for the level.
     """
     result = runner.invoke(app, [
         'config',

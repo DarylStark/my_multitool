@@ -6,7 +6,7 @@ import logging
 
 import pytest
 
-from my_multitool.models import LoggingLevel
+from my_multitool.models import LoggingLevel  # type:ignore
 
 
 @pytest.mark.parametrize('level_object, level_value', [
@@ -21,5 +21,9 @@ def test_logging_levels(level_object: str, level_value: int) -> None:
 
     The LoggingLevel contains levels that should match the integers from the
     `logging` module.
+
+    Args:
+        level_object: the object for the level.
+        level_value: the integer value for the level.
     """
     assert int(level_object) == level_value

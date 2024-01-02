@@ -7,8 +7,8 @@ import re
 
 from typer.testing import CliRunner
 
-from my_multitool import __version__ as mymt_version
-from my_multitool.__main__ import app
+from my_multitool import __version__ as mymt_version  # type:ignore
+from my_multitool.__main__ import app  # type:ignore
 
 runner = CliRunner(echo_stdin=True)
 

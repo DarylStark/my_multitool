@@ -1,9 +1,11 @@
+"""Configuration for PyTest."""
+# pylint: disable=redefined-outer-name
 
 import pytest
-from my_data.my_data import MyData
+from my_data.my_data import MyData  # type:ignore
 
-from my_multitool.config import ConfigManager, ContextModel
-from my_multitool.globals import config, get_global_data_object
+from my_multitool.config import ConfigManager, ContextModel  # type:ignore
+from my_multitool.globals import config, get_global_data_object  # type:ignore
 
 
 @pytest.fixture
@@ -11,7 +13,7 @@ def config_object(tmp_path_factory: pytest.TempPathFactory) -> ConfigManager:
     """Fixture for a global config object.
 
     Args:
-        tmp_path: a temporary path created by PyTest.
+        tmp_path_factory: a temporary path factory.
 
     Returns:
         The created config object.
@@ -32,7 +34,9 @@ def config_object(tmp_path_factory: pytest.TempPathFactory) -> ConfigManager:
 
 
 @pytest.fixture
-def data_object(config_object: ConfigManager) -> MyData:
+def data_object(
+    config_object: ConfigManager  # pylint: disable=unused-argument
+) -> MyData:
     """Fixture for a global data object.
 
     Args:
@@ -47,7 +51,8 @@ def data_object(config_object: ConfigManager) -> MyData:
 
 
 @pytest.fixture
-def data_object_with_database(data_object: MyData) -> MyData:
+def data_object_with_database(
+        data_object: MyData) -> MyData:
     """Fixture for a global data object with a configured database.
 
     Args:
@@ -65,8 +70,7 @@ def data_object_with_database(data_object: MyData) -> MyData:
 @pytest.fixture
 def data_object_with_database_with_svc_user(
         data_object_with_database: MyData) -> MyData:
-    """Fixture for a global data object with a configured database and a svc
-    user.
+    """Fixture for a data object with a configured database and a svc user.
 
     Args:
         data_object_with_database: a data object with a configured database.
@@ -80,10 +84,9 @@ def data_object_with_database_with_svc_user(
 
 
 @pytest.fixture
-def data_object_with_database_with_root_user(
+def data_object_with_database_with_root_user(  # pylint: disable=W0621
         data_object_with_database_with_svc_user: MyData) -> MyData:
-    """Fixture for a global data object with a configured database, a svc user
-    and a root user
+    """Fixture for a data object with a configured database.
 
     Args:
         data_object_with_database_with_svc_user: a data object with a
@@ -99,8 +102,7 @@ def data_object_with_database_with_root_user(
 @pytest.fixture
 def data_object_with_database_with_wrong_root_user(
         data_object_with_database_with_svc_user: MyData) -> MyData:
-    """Fixture for a global data object with a configured database, a svc user
-    and a wrongly configured root user.
+    """Fixture for a global data object with a configured database.
 
     Args:
         data_object_with_database_with_svc_user: a data object with a
