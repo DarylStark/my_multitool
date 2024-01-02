@@ -58,7 +58,7 @@ app.add_typer(users_app, name='users', help='User management')
 app.add_typer(config_app, name='config', help='Configuration for My Multitool')
 
 
-def main() -> None:
+def main() -> None:  # pragma: no cover
     """Entry point for the CLI script.
 
     Defines the commands for the CLI script and makes sure the correct
@@ -93,5 +93,5 @@ def main() -> None:
         print_error(str(exception), prefix='MyData error')
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     main()

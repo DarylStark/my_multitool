@@ -2,7 +2,7 @@
 
 Exposes the `users` commands for the CLI app.
 """
-from getpass import getpass
+import getpass
 from logging import getLogger
 
 import typer
@@ -116,11 +116,11 @@ def set_password(username: str) -> None:
                 from exc
 
     if user:
-        new_password = getpass('Password: ')
+        new_password = getpass.getpass('Password: ')
         if len(new_password) == 0:
             raise GenericCLIException('Password too short')
 
-        new_password_repeat = getpass('Repeat: ')
+        new_password_repeat = getpass.getpass('Repeat: ')
         if new_password != new_password_repeat:
             raise GenericCLIException('Passwords do not match')
 
