@@ -6,7 +6,8 @@ import pytest
 
 from my_multitool.config import ConfigManager  # type:ignore
 from my_multitool.exceptions import (  # type:ignore
-    ConfigFileNotFoundException, NoConfigToSaveException)
+    ConfigFileNotFoundException, ConfigFileNotValidException,
+    NoConfigToSaveException)
 
 
 @pytest.mark.parametrize('attribute, expected_value', [

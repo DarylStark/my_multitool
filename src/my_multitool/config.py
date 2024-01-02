@@ -123,10 +123,7 @@ class ConfigManager:
             raise ConfigFileNotFoundException from exc
 
         # Create a ConfigModel of it
-        try:
-            self.config = ConfigModel(**content)
-        except ValidationError as exc:
-            raise ConfigFileNotValidException from exc
+        self.config = ConfigModel(**content)
 
     def save(self) -> None:
         """Save the configuration to file.
