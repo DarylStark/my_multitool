@@ -24,6 +24,7 @@ class ContextModel(BaseModel):
         db_string: the database connection string for the context.
         warning: determines if a warning should be given
     """
+
     # We disallow extra fields. This makes sure the user cannot specify
     # fields that are not defined. This results in a more robust
     # configuration.
