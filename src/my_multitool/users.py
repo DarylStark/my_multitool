@@ -116,7 +116,7 @@ def set_password(username: str) -> None:
                 from exc
 
     if user:
-        new_password = getpass.getpass(getpass.getpass)
+        new_password = getpass.getpass('Password: ')
         if len(new_password) == 0:
             raise GenericCLIException('Password too short')
 
