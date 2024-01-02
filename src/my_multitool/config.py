@@ -8,10 +8,9 @@ import re
 from os.path import expanduser
 
 import yaml
-from pydantic import BaseModel, ConfigDict, ValidationError
+from pydantic import BaseModel, ConfigDict
 
-from .exceptions import (ConfigFileNotFoundException,
-                         ConfigFileNotValidException, NoConfigToSaveException)
+from .exceptions import (ConfigFileNotFoundException, NoConfigToSaveException)
 
 
 class ContextModel(BaseModel):
@@ -110,8 +109,6 @@ class ConfigManager:
         Raises:
             ConfigFileNotFoundException: when the given configfile is not
                 found or not entered.
-            ConfigFileNotValidException: when the given configfile is not
-                correct.
         """
         if not self.yaml_file:
             raise ConfigFileNotFoundException
