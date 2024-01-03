@@ -35,6 +35,10 @@ def version() -> None:
     """Display version information.
 
     Shows version information for the tool and all related libraries.
+
+    Returns:
+        The return code for the program. The calling code should use this as
+        the exit code for the application.
     """
     console = ConsoleFactory.get_console()
 

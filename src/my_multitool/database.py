@@ -28,6 +28,10 @@ def create(echo_sql: bool = False,
         drop_tables: if set to True, all tables will be dropped which will
             result in data loss.
         create_data: if set to True, testdata will be created.
+
+    Raises:
+        NoConfirmationException: when the user presses 'N' at the question if
+            he wants to continue.
     """
     logger = getLogger('database-create')
     console = ConsoleFactory.get_console()
