@@ -47,7 +47,6 @@ def test_database_creation_with_warning_confirm(
     assert result.stdout.strip() == 'Created tables'
 
 
-@pytest.mark.xfail(reason='Exit code should be changed')
 @pytest.mark.parametrize('answer', [
     'N', 'n', 'x'
 ])

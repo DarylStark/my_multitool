@@ -6,6 +6,8 @@ from logging import getLogger
 
 import typer
 
+from my_multitool.exceptions import NoConfirmationException
+
 from .globals import config, get_global_data_object
 from .style import ConsoleFactory
 
@@ -26,6 +28,10 @@ def create(echo_sql: bool = False,
         drop_tables: if set to True, all tables will be dropped which will
             result in data loss.
         create_data: if set to True, testdata will be created.
+
+    Raises:
+        NoConfirmationException: when the user presses 'N' at the question if
+            he wants to continue.
     """
     logger = getLogger('database-create')
     console = ConsoleFactory.get_console()
@@ -38,7 +44,7 @@ def create(echo_sql: bool = False,
             f'You are working on context "{config.active_context.name}". ' +
             'This action can be fatal. Continue? [ Y/n ] [/yellow]')
         if confirm.lower().strip() != 'y' and confirm.strip() != '':
-            return
+            raise NoConfirmationException
 
     logger.debug('Creating MyData object')
     data = get_global_data_object()

@@ -22,3 +22,7 @@ class NoConfigToSaveException(MyMultitoolException):
 
 class GenericCLIException(MyMultitoolException):
     """Exception for a generic error in the CLI options."""
+
+
+class NoConfirmationException(MyMultitoolException):
+    """Exception when the user presses N at a confirmation."""
