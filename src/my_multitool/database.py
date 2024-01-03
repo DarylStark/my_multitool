@@ -6,6 +6,8 @@ from logging import getLogger
 
 import typer
 
+from my_multitool.exceptions import NoConfirmationException
+
 from .globals import config, get_global_data_object
 from .style import ConsoleFactory
 
@@ -38,7 +40,7 @@ def create(echo_sql: bool = False,
             f'You are working on context "{config.active_context.name}". ' +
             'This action can be fatal. Continue? [ Y/n ] [/yellow]')
         if confirm.lower().strip() != 'y' and confirm.strip() != '':
-            return
+            raise NoConfirmationException
 
     logger.debug('Creating MyData object')
     data = get_global_data_object()

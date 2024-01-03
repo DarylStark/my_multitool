@@ -20,7 +20,8 @@ from . import __version__ as my_multitool_version
 from .cli_config import app as config_app
 from .database import app as database_app
 from .exceptions import (ConfigFileNotFoundException,
-                         ConfigFileNotValidException, GenericCLIException)
+                         ConfigFileNotValidException, GenericCLIException,
+                         NoConfirmationException)
 from .globals import config
 from .style import ConsoleFactory, get_table, print_error
 from .users import app as users_app
@@ -58,7 +59,7 @@ app.add_typer(users_app, name='users', help='User management')
 app.add_typer(config_app, name='config', help='Configuration for My Multitool')
 
 
-def main() -> None:  # pragma: no cover
+def main() -> int:  # pragma: no cover
     """Entry point for the CLI script.
 
     Defines the commands for the CLI script and makes sure the correct
@@ -87,11 +88,17 @@ def main() -> None:  # pragma: no cover
     # Run the Typer app
     try:
         app()
+    except NoConfirmationException as exception:
+        print_error(str(exception), prefix='CLI error')
+        return 1
     except GenericCLIException as exception:
         print_error(str(exception), prefix='CLI error')
+        return 2
     except MyDataException as exception:
         print_error(str(exception), prefix='MyData error')
+        return 8
+    return 0
 
 
 if __name__ == '__main__':  # pragma: no cover
-    main()
+    sys.exit(main())
