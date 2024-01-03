@@ -35,10 +35,6 @@ def version() -> None:
     """Display version information.
 
     Shows version information for the tool and all related libraries.
-
-    Returns:
-        The return code for the program. The calling code should use this as
-        the exit code for the application.
     """
     console = ConsoleFactory.get_console()
 
@@ -68,6 +64,10 @@ def main() -> int:  # pragma: no cover
 
     Defines the commands for the CLI script and makes sure the correct
     functions get called when running a specific CLI command.
+
+    Returns:
+        The return code for the program. The calling code should use this as
+        the exit code for the application.
     """
     # Load the configurationfile
     config.configure('~/.my_multitool_config.yaml')
