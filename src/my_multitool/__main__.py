@@ -7,9 +7,9 @@ import logging
 import sys
 
 import typer
-from my_data import __version__ as my_data_version  # type:ignore
-from my_data.exceptions import MyDataException  # type:ignore
-from my_model import __version__ as my_model_version  # type:ignore
+from my_data import __version__ as my_data_version
+from my_data.exceptions import MyDataException
+from my_model import __version__ as my_model_version
 from pydantic import __version__ as pydantic_version
 from rich.logging import RichHandler
 from sqlalchemy import __version__ as sqlalchemy_version

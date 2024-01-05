@@ -2,10 +2,10 @@
 # pylint: disable=redefined-outer-name
 
 import pytest
-from my_data.my_data import MyData  # type:ignore
+from my_data.my_data import MyData
 
-from my_multitool.config import ConfigManager, ContextModel  # type:ignore
-from my_multitool.globals import config, get_global_data_object  # type:ignore
+from my_multitool.config import ConfigManager, ContextModel
+from my_multitool.globals import config, get_global_data_object
 
 
 @pytest.fixture

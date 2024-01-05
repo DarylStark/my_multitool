@@ -4,8 +4,8 @@ import os
 
 import pytest
 
-from my_multitool.config import ConfigManager  # type:ignore
-from my_multitool.exceptions import (  # type:ignore
+from my_multitool.config import ConfigManager
+from my_multitool.exceptions import (
     ConfigFileNotFoundException, NoConfigToSaveException)
 
 
@@ -86,7 +86,7 @@ def test_saving_config_without_a_config(config_object: ConfigManager) -> None:
     Args:
         config_object: fixture for the config object.
     """
-    config_object.config = None
+    config_object.config = None  # type:ignore
     with pytest.raises(NoConfigToSaveException):
         config_object.save()
 

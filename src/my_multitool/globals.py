@@ -3,7 +3,7 @@
 Contains the global objects for the package.
 """
 
-from my_data.my_data import MyData  # type:ignore
+from my_data.my_data import MyData
 from .config import ConfigManager
 
 config = ConfigManager()
