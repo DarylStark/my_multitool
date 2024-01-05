@@ -1,6 +1,6 @@
 {
     // Python configuration
-    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.typeCheckingMode": "strict",
     "python.analysis.autoImportCompletions": true,
     // Python linting
     "python.analysis.extraPaths": [
@@ -11,7 +11,6 @@
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"
     },
-    "python.formatting.provider": "none",
     // Python unit testing
     "python.testing.pytestEnabled": true,
     "python.testing.unittestEnabled": false,

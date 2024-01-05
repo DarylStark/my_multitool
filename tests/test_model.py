@@ -6,7 +6,7 @@ import logging
 
 import pytest
 
-from my_multitool.models import LoggingLevel  # type:ignore
+from my_multitool.models import LoggingLevel
 
 
 @pytest.mark.parametrize('level_object, level_value', [

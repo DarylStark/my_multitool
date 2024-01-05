@@ -1,11 +1,11 @@
 """Tests to test the `database` subcommand for the tool."""
 import pytest
-from my_data.my_data import MyData  # type:ignore
+from my_data.my_data import MyData
 from rich.console import Console
 from typer.testing import CliRunner
 
-from my_multitool.__main__ import app  # type:ignore
-from my_multitool.globals import config  # type:ignore
+from my_multitool.__main__ import app
+from my_multitool.globals import config
 
 runner = CliRunner(echo_stdin=True)
 

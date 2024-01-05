@@ -9,9 +9,9 @@ import re
 import pytest
 from typer.testing import CliRunner
 
-from my_multitool.__main__ import app  # type:ignore
-from my_multitool.config import ConfigManager  # type:ignore
-from my_multitool.exceptions import GenericCLIException  # type:ignore
+from my_multitool.__main__ import app
+from my_multitool.config import ConfigManager
+from my_multitool.exceptions import GenericCLIException
 
 runner = CliRunner(echo_stdin=True)
 

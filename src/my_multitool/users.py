@@ -6,8 +6,8 @@ import getpass
 from logging import getLogger
 
 import typer
-from my_data.exceptions import UnknownUserAccountException  # type:ignore
-from my_model.user_scoped_models import User  # type:ignore
+from my_data.exceptions import UnknownUserAccountException
+from my_model.user_scoped_models import User
 
 from .exceptions import GenericCLIException
 from .globals import config, get_global_data_object
@@ -46,11 +46,11 @@ def retrieve() -> None:
             'Service user credentials or root user not set in active context')
 
     with data.get_context_for_service_user(
-            username=config.active_context.service_user,
-            password=config.active_context.service_pass) as context:
+            username=str(config.active_context.service_user),
+            password=str(config.active_context.service_pass)) as context:
         try:
             user = context.get_user_account_by_username(
-                config.active_context.root_user)
+                str(config.active_context.root_user))
         except UnknownUserAccountException as exc:
             raise GenericCLIException(
                 f'Unknown root user: "{config.active_context.root_user}"') \
@@ -105,11 +105,11 @@ def set_password(username: str) -> None:
             'Service user credentials or root user not set in active context')
 
     with data.get_context_for_service_user(
-            username=config.active_context.service_user,
-            password=config.active_context.service_pass) as context:
+            username=str(config.active_context.service_user),
+            password=str(config.active_context.service_pass)) as context:
         try:
             user = context.get_user_account_by_username(
-                config.active_context.root_user)
+                str(config.active_context.root_user))
         except UnknownUserAccountException as exc:
             raise GenericCLIException(
                 f'Unknown root user: "{config.active_context.root_user}"') \
@@ -125,7 +125,9 @@ def set_password(username: str) -> None:
             raise GenericCLIException('Passwords do not match')
 
         with data.get_context(user=user) as context:
-            users_accounts = context.users.retrieve(User.username == username)
+            users_accounts = context.users.retrieve(
+                User.username ==  # type:ignore
+                username)
             if len(users_accounts) != 1:
                 raise GenericCLIException(
                     f'User "{username}" not found.')

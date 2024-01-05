@@ -1,7 +1,7 @@
 """Tests for the global style of the application."""
 import pytest
 
-from my_multitool.style import print_error  # type:ignore
+from my_multitool.style import print_error
 
 
 @pytest.mark.parametrize('message', ['testmessage', 'Something went wrong'])

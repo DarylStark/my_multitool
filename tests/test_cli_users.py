@@ -2,11 +2,11 @@
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
-from my_data.my_data import MyData  # type:ignore
+from my_data.my_data import MyData
 from typer.testing import CliRunner
 
-from my_multitool.__main__ import app  # type:ignore
-from my_multitool.exceptions import GenericCLIException  # type:ignore
+from my_multitool.__main__ import app
+from my_multitool.exceptions import GenericCLIException
 
 runner = CliRunner(echo_stdin=True)
 
