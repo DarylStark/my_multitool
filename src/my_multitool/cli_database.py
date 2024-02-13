@@ -7,6 +7,7 @@ from logging import getLogger
 import typer
 from my_data.my_data_table_creator import MyDataTableCreator
 from my_multitool.exceptions import NoConfirmationException
+from my_data.data_loader import DataLoader, JSONDataSource
 
 from .globals import config, get_my_data_object_for_context
 from .style import ConsoleFactory
@@ -55,3 +56,28 @@ def create(echo_sql: bool = False,
     creator = MyDataTableCreator(my_data_object=data)
     creator.create_db_tables(drop_tables=drop_tables)
     console.print('Created tables')
+
+
+@app.command(name='import-json')
+def import_json(filename: str, echo_sql: bool = False) -> None:
+    """Import data from a JSON file.
+
+    Args:
+        filename: the name of the file to import.
+        echo_sql: if set to True, the SQL queries that are executed will be
+            displayed. This can be usefull to see what is happening.
+    """
+    logger = getLogger('database-import-json')
+    console = ConsoleFactory.get_console()
+
+    logger.debug('Creating MyData object')
+    data = get_my_data_object_for_context(
+        context_name=None, db_args={'echo': echo_sql})
+    data.create_engine()
+
+    loader = DataLoader(
+        my_data_object=data,
+        data_source=JSONDataSource(filename))
+    logger.info('Importing data from file "%s"', filename)
+    loader.load()
+    console.print('Imported data')
