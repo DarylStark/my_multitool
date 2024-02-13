@@ -18,13 +18,13 @@ from typer import __version__ as typer_version
 
 from . import __version__ as my_multitool_version
 from .cli_config import app as config_app
-from .database import app as database_app
+from .cli_database import app as database_app
 from .exceptions import (ConfigFileNotFoundException,
                          ConfigFileNotValidException, GenericCLIException,
                          NoConfirmationException)
 from .globals import config
 from .style import ConsoleFactory, get_table, print_error
-from .users import app as users_app
+from .cli_users import app as users_app
 
 # Create the Typer App
 app = typer.Typer(no_args_is_help=True)
