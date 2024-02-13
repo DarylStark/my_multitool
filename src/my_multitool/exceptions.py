@@ -26,3 +26,7 @@ class GenericCLIException(MyMultitoolException):
 
 class NoConfirmationException(MyMultitoolException):
     """Exception when the user presses N at a confirmation."""
+
+
+class SQLError(MyMultitoolException):
+    """Exception for a SQL error."""

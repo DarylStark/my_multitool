@@ -71,7 +71,20 @@
             "args": [
                 "database",
                 "import-json",
-                "tests/test_data.json"
+                "../tests/test_data.json"
+            ],
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/src"
+        },
+        {
+            "name": "Debug CLI script - Databases - Import JSON (wrong file)",
+            "type": "python",
+            "request": "launch",
+            "module": "my_multitool",
+            "args": [
+                "database",
+                "import-json",
+                "non-existing-json.json"
             ],
             "justMyCode": true,
             "cwd": "${workspaceFolder}/src"

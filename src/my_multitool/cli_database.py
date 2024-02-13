@@ -5,9 +5,12 @@ Exposes the `database` commands for the CLI app.
 from logging import getLogger
 
 import typer
-from my_data.my_data_table_creator import MyDataTableCreator
-from my_multitool.exceptions import NoConfirmationException
 from my_data.data_loader import DataLoader, JSONDataSource
+from my_data.my_data_table_creator import MyDataTableCreator
+from sqlalchemy.exc import IntegrityError
+
+from my_multitool.exceptions import (GenericCLIException, SQLError,
+                                     NoConfirmationException)
 
 from .globals import config, get_my_data_object_for_context
 from .style import ConsoleFactory
@@ -79,5 +82,12 @@ def import_json(filename: str, echo_sql: bool = False) -> None:
         my_data_object=data,
         data_source=JSONDataSource(filename))
     logger.info('Importing data from file "%s"', filename)
-    loader.load()
+
+    try:
+        loader.load()
+    except FileNotFoundError as exception:
+        raise GenericCLIException(
+            f'File not found: {filename}') from exception
+    except IntegrityError as exception:
+        raise SQLError(','.join(exception.args)) from exception
     console.print('Imported data')
