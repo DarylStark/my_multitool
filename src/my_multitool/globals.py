@@ -17,7 +17,12 @@ def get_my_data_object_for_context(
     """Get a configured MyData object for a specific context.
 
     Returns a MyData object with the correct configuration for the given
-    context
+    context.
+
+    Args:
+        context_name: the name of the context to use. If not given, the active
+            context will be used.
+        db_args: additional arguments for the database connection.
 
     Returns:
         A MyData object.

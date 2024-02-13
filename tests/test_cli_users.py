@@ -49,8 +49,8 @@ def test_users_retrieve_with_a_wrong_root_user(
             configured database, a service user and a wrong root user.
         monkeypatch: the mocker.
     """
-    # Mocking the `get_my_data_object_for_context` function makes sure we always get
-    # the same data object.
+    # Mocking the `get_my_data_object_for_context` function makes sure we
+    # always get the same data object.
     monkeypatch.setattr(
         'my_multitool.cli_users.get_my_data_object_for_context',
         lambda: data_object_with_database_with_wrong_root_user)
@@ -69,8 +69,8 @@ def test_users_retrieve(
             configured database, a service user and a root user.
         monkeypatch: the mocker.
     """
-    # Mocking the `get_my_data_object_for_context` function makes sure we always get
-    # the same data object.
+    # Mocking the `get_my_data_object_for_context` function makes sure we
+    # always get the same data object.
     monkeypatch.setattr(
         'my_multitool.cli_users.get_my_data_object_for_context',
         lambda: data_object_with_database_with_root_user)
@@ -119,8 +119,8 @@ def test_users_set_password_empty_password(
     def replacement_input(*args, **kwargs):  # pylint: disable=unused-argument
         return ''
 
-    # Mocking the `get_my_data_object_for_context` function makes sure we always get
-    # the same data object.
+    # Mocking the `get_my_data_object_for_context` function makes sure we
+    # always get the same data object.
     monkeypatch.setattr(
         'my_multitool.cli_users.get_my_data_object_for_context',
         lambda: data_object_with_database_with_root_user)
@@ -140,8 +140,8 @@ def test_users_set_password_with_a_wrong_root_user(
             configured database, a service user and a wrong root user.
         monkeypatch: the mocker.
     """
-    # Mocking the `get_my_data_object_for_context` function makes sure we always get
-    # the same data object.
+    # Mocking the `get_my_data_object_for_context` function makes sure we
+    # always get the same data object.
     monkeypatch.setattr(
         'my_multitool.cli_users.get_my_data_object_for_context',
         lambda: data_object_with_database_with_wrong_root_user)
@@ -167,8 +167,8 @@ def test_users_set_password_inconsistent_passwords(
         passwords.pop(0)
         return password
 
-    # Mocking the `get_my_data_object_for_context` function makes sure we always get
-    # the same data object.
+    # Mocking the `get_my_data_object_for_context` function makes sure we
+    # always get the same data object.
     monkeypatch.setattr(
         'my_multitool.cli_users.get_my_data_object_for_context',
         lambda: data_object_with_database_with_root_user)
@@ -191,8 +191,8 @@ def test_users_set_password_non_existing_user(
     def replacement_input(*args, **kwargs):  # pylint: disable=unused-argument
         return 'test'
 
-    # Mocking the `get_my_data_object_for_context` function makes sure we always get
-    # the same data object.
+    # Mocking the `get_my_data_object_for_context` function makes sure we
+    # always get the same data object.
     monkeypatch.setattr(
         'my_multitool.cli_users.get_my_data_object_for_context',
         lambda: data_object_with_database_with_root_user)
@@ -221,8 +221,8 @@ def test_users_set_password(
     def replacement_input(*args, **kwargs):  # pylint: disable=unused-argument
         return password
 
-    # Mocking the `get_my_data_object_for_context` function makes sure we always get
-    # the same data object.
+    # Mocking the `get_my_data_object_for_context` function makes sure we
+    # always get the same data object.
     monkeypatch.setattr(
         'my_multitool.cli_users.get_my_data_object_for_context',
         lambda: data_object_with_database_with_root_user)
