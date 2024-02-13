@@ -7,7 +7,7 @@ from logging import getLogger
 
 import typer
 from my_data.exceptions import UnknownUserAccountException
-from my_model.user_scoped_models import User
+from my_model import User
 
 from .exceptions import GenericCLIException
 from .globals import config, get_global_data_object
