@@ -80,28 +80,40 @@ def data_object(
 
 
 @pytest.fixture
-def data_object_with_database(
+def data_object_with_tables(
         data_object: MyData) -> MyData:
-    """Fixture for a global data object with a configured database.
+    """Fixture for a global data object with tables.
 
     Args:
-        data_object: a created data object with database tables and
-            initialization data.
+        data_object: a created data object with a database engine.
 
     Returns:
         The created MyData object.
     """
     creator = MyDataTableCreator(my_data_object=data_object)
     creator.create_db_tables()
+    return data_object
 
+
+@pytest.fixture
+def data_object_with_database(
+        data_object_with_tables: MyData) -> MyData:
+    """Fixture for a global data object with a configured database.
+
+    Args:
+        data_object_with_tables: a created data object with database tables.
+
+    Returns:
+        The created MyData object.
+    """
     # Create testdata
     loader = DataLoader(
-        my_data_object=data_object,
+        my_data_object=data_object_with_tables,
         data_source=JSONDataSource(
             test_filename()))
     loader.load()
 
-    return data_object
+    return data_object_with_tables
 
 
 @pytest.fixture
