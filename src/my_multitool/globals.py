@@ -24,10 +24,14 @@ def get_my_data_object_for_context(
     """
     if not context_name:
         context_name = config.active_context.name
+
     data = MyData()
     context = config.contexts[context_name]
+
     data.configure(
         db_connection_str=context.db_string,
-        database_args=db_args)
+        database_args=db_args,
+        service_username=context.service_user,
+        service_password=context.service_pass)
 
     return data

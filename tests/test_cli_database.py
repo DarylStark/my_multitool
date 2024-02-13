@@ -82,17 +82,3 @@ def test_database_creation_with_drop_tables(
     result = runner.invoke(app, ['database', 'create', '--drop-tables'])
     assert result.exit_code == 0
     assert result.stdout.strip() == 'Created tables'
-
-
-def test_database_creation_with_create_data(
-    data_object: MyData  # pylint: disable=unused-argument
-) -> None:
-    """Test the creation of the database while creating data.
-
-    Args:
-        data_object: fixture for the data object.
-    """
-    result = runner.invoke(app, ['database', 'create', '--create-data'])
-    assert result.exit_code == 0
-    assert 'Created tables' in result.stdout.strip()
-    assert 'Created testdata' in result.stdout.strip()

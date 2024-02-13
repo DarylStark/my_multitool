@@ -45,9 +45,7 @@ def retrieve() -> None:
         raise GenericCLIException(
             'Service user credentials or root user not set in active context')
 
-    with data.get_context_for_service_user(
-            username=str(config.active_context.service_user),
-            password=str(config.active_context.service_pass)) as context:
+    with data.get_context_for_service_user() as context:
         try:
             user = context.get_user_account_by_username(
                 str(config.active_context.root_user))
@@ -104,9 +102,7 @@ def set_password(username: str) -> None:
         raise GenericCLIException(
             'Service user credentials or root user not set in active context')
 
-    with data.get_context_for_service_user(
-            username=str(config.active_context.service_user),
-            password=str(config.active_context.service_pass)) as context:
+    with data.get_context_for_service_user() as context:
         try:
             user = context.get_user_account_by_username(
                 str(config.active_context.root_user))
