@@ -5,7 +5,7 @@ import pytest
 from my_data.my_data import MyData
 
 from my_multitool.config import ConfigManager, ContextModel
-from my_multitool.globals import config, get_global_data_object
+from my_multitool.globals import config, get_my_data_object_for_context
 
 
 @pytest.fixture
@@ -47,7 +47,7 @@ def data_object(
     Returns:
         The created MyData object.
     """
-    return get_global_data_object()
+    return get_my_data_object_for_context()
 
 
 @pytest.fixture

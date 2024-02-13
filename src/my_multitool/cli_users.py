@@ -10,7 +10,7 @@ from my_data.exceptions import UnknownUserAccountException
 from my_model import User
 
 from .exceptions import GenericCLIException
-from .globals import config, get_global_data_object
+from .globals import config, get_my_data_object_for_context
 from .style import get_table, ConsoleFactory
 
 app = typer.Typer(no_args_is_help=True)
@@ -34,7 +34,7 @@ def retrieve() -> None:
     logger.info('Using config "%s"', config.active_context.name)
 
     logger.debug('Creating MyData object')
-    data = get_global_data_object()
+    data = get_my_data_object_for_context()
 
     user = None
     if any((
@@ -93,7 +93,7 @@ def set_password(username: str) -> None:
     logger.info('Using config "%s"', config.active_context.name)
 
     logger.debug('Creating MyData object')
-    data = get_global_data_object()
+    data = get_my_data_object_for_context()
 
     user = None
     if any((
