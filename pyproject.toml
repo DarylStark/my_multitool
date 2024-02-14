@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ds-my-multitool"
-version = "1.0.3"
+version = "1.0.4-dev"
 description = "Multitools for the My project"
 authors = ["Daryl Stark <daryl@dstark.nl>"]
 license = "MIT"
@@ -13,7 +13,7 @@ typer = "^0.9.0"
 pydantic = "^2.0.0"
 pyyaml = "^6.0.1"
 rich = "^13.5.2"
-ds-my-data = "1.2.0"
+ds-my-data = "1.2.1"
 
 [tool.poetry.group.dev]
 optional = true
@@ -50,7 +50,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.bumpver]
-current_version = "1.0.3"
+current_version = "1.0.4-dev"
 version_pattern = "MAJOR.MINOR.PATCH[-TAG]"
 commit_message = "Version {new_version}"
 commit = true

@@ -449,13 +449,13 @@ files = [
 
 [[package]]
 name = "ds-my-data"
-version = "1.2.0"
+version = "1.2.1"
 description = "The data methods for the My project"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "ds_my_data-1.2.0-py3-none-any.whl", hash = "sha256:93566e8c4d65cf49d92102e096f031db53622792d5a109bc1a7c7fb140e16e5a"},
-    {file = "ds_my_data-1.2.0.tar.gz", hash = "sha256:5a30d3554b99023bcb75069d7634e7be703d2809101110d05789ddf4071bfaf7"},
+    {file = "ds_my_data-1.2.1-py3-none-any.whl", hash = "sha256:6e084f9d46cd5429287f3a6a4c84e2cac4c75af29f010e14e0fa9922a13cc19a"},
+    {file = "ds_my_data-1.2.1.tar.gz", hash = "sha256:c72abd892b04f078cd6a5f3fecbf0d7272a2e7661a5456f154493fca39d32240"},
 ]
 
 [package.dependencies]
@@ -1811,4 +1811,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "659ecfb7c09c433a80c4170f671b7e11924e45d1580362ecabaa94ca6b66fd85"
+content-hash = "ed8285ac09937cb1ab02e9c58ff40ecbc2dcc7fca82ae89e4308c28981f3db60"
