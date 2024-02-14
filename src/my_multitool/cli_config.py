@@ -3,7 +3,7 @@ import logging
 
 import typer
 
-from .contexts import app as contexts_app
+from .cli_config_contexts import app as contexts_app
 from .globals import config
 from .models import LoggingLevel
 from .style import ConsoleFactory
