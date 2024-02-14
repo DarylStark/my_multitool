@@ -1,0 +1,35 @@
+{
+    "api_scopes": [],
+    "api_token_scopes": [],
+    "users": [
+        {
+            "id": 1,
+            "fullname": "root",
+            "username": "root",
+            "email": "root@example.com",
+            "role": 1
+        },
+        {
+            "id": 2,
+            "fullname": "Normal user 1",
+            "username": "normal.user.1",
+            "email": "normal_user_1@example.com",
+            "role": 3
+        },
+        {
+            "id": 3,
+            "fullname": "Normal user 2",
+            "username": "normal.user.2",
+            "email": "normal_user_2@example.com",
+            "role": 3
+        },
+        {
+            "id": 4,
+            "fullname": "Service User - for tests",
+            "username": "service.user",
+            "email": "service.user@example.com",
+            "role": 2,
+            "_password": "service_password"
+        }
+    ]
+}

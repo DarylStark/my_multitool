@@ -13,8 +13,8 @@ from my_multitool.exceptions import (
     ('name', 'default'),
     ('db_string', 'sqlite:///:memory:'),
     ('warning', False),
-    ('service_user', None),
-    ('service_pass', None),
+    ('service_user', 'service.user'),
+    ('service_pass', 'service_password'),
     ('root_user', None),
 ])
 def test_config_manager_default_config_default_context(

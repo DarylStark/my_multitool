@@ -16,6 +16,7 @@ The ``my-multiool`` Python application provides basic tools to work with a insta
    usage/installation
    usage/overview
    usage/config
+   usage/contexts
    usage/databases
    usage/users
 
@@ -25,14 +26,14 @@ The ``my-multiool`` Python application provides basic tools to work with a insta
    :maxdepth: 2
 
    api_documentation/cli_config
+   api_documentation/cli_config_contexts
+   api_documentation/cli_database
+   api_documentation/cli_users
    api_documentation/config
-   api_documentation/contexts
-   api_documentation/database
    api_documentation/exceptions
    api_documentation/globals
    api_documentation/models
    api_documentation/style
-   api_documentation/users
 
 Indices and tables
 ==================

@@ -7,10 +7,10 @@ from logging import getLogger
 
 import typer
 from my_data.exceptions import UnknownUserAccountException
-from my_model.user_scoped_models import User
+from my_model import User
 
 from .exceptions import GenericCLIException
-from .globals import config, get_global_data_object
+from .globals import config, get_my_data_object_for_context
 from .style import get_table, ConsoleFactory
 
 app = typer.Typer(no_args_is_help=True)
@@ -34,7 +34,7 @@ def retrieve() -> None:
     logger.info('Using config "%s"', config.active_context.name)
 
     logger.debug('Creating MyData object')
-    data = get_global_data_object()
+    data = get_my_data_object_for_context()
 
     user = None
     if any((
@@ -45,9 +45,7 @@ def retrieve() -> None:
         raise GenericCLIException(
             'Service user credentials or root user not set in active context')
 
-    with data.get_context_for_service_user(
-            username=str(config.active_context.service_user),
-            password=str(config.active_context.service_pass)) as context:
+    with data.get_context_for_service_user() as context:
         try:
             user = context.get_user_account_by_username(
                 str(config.active_context.root_user))
@@ -93,7 +91,7 @@ def set_password(username: str) -> None:
     logger.info('Using config "%s"', config.active_context.name)
 
     logger.debug('Creating MyData object')
-    data = get_global_data_object()
+    data = get_my_data_object_for_context()
 
     user = None
     if any((
@@ -104,9 +102,7 @@ def set_password(username: str) -> None:
         raise GenericCLIException(
             'Service user credentials or root user not set in active context')
 
-    with data.get_context_for_service_user(
-            username=str(config.active_context.service_user),
-            password=str(config.active_context.service_pass)) as context:
+    with data.get_context_for_service_user() as context:
         try:
             user = context.get_user_account_by_username(
                 str(config.active_context.root_user))
