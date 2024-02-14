@@ -92,8 +92,9 @@ def test_database_import_json(
 
     Args:
         data_object_with_tables: fixture for the data object.
+        monkeypatch: a monkeypatch fixture.
     """
-    def replacement_data(**kwargs):
+    def replacement_data(**kwargs):  # pylint: disable=unused-argument
         return data_object_with_tables
 
     monkeypatch.setattr(
@@ -113,8 +114,9 @@ def test_database_import_json_wrong_filename(
 
     Args:
         data_object_with_tables: fixture for the data object.
+        monkeypatch: a monkeypatch fixture.
     """
-    def replacement_data(**kwargs):
+    def replacement_data(**kwargs):  # pylint: disable=unused-argument
         return data_object_with_tables
 
     monkeypatch.setattr(
@@ -133,8 +135,9 @@ def test_database_import_json_integrity_error(
 
     Args:
         data_object_with_database: fixture for the data object.
+        monkeypatch: a monkeypatch fixture.
     """
-    def replacement_data(**kwargs):
+    def replacement_data(**kwargs):  # pylint: disable=unused-argument
         return data_object_with_database
 
     monkeypatch.setattr(

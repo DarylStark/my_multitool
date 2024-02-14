@@ -69,6 +69,10 @@ def import_json(filename: str, echo_sql: bool = False) -> None:
         filename: the name of the file to import.
         echo_sql: if set to True, the SQL queries that are executed will be
             displayed. This can be usefull to see what is happening.
+
+    Raises:
+        GenericCLIException: when the file to import is not found.
+        SQLError: when an SQL error occurs.
     """
     logger = getLogger('database-import-json')
     console = ConsoleFactory.get_console()
