@@ -2,6 +2,7 @@
 
 Exposes the `users` commands for the CLI app.
 """
+
 import getpass
 from logging import getLogger
 
@@ -9,7 +10,7 @@ import typer
 from my_data.exceptions import UnknownUserAccountError
 from my_model import User
 
-from .exceptions import GenericCLIException
+from .exceptions import GenericCLIError
 from .globals import config, get_my_data_object_for_context
 from .style import ConsoleFactory, get_table
 
@@ -37,22 +38,26 @@ def retrieve() -> None:
     data = get_my_data_object_for_context()
 
     user = None
-    if any((
-        config.active_context.service_user is None,
-        config.active_context.service_pass is None,
-        config.active_context.root_user is None,
-    )):
-        raise GenericCLIException(
-            'Service user credentials or root user not set in active context')
+    if any(
+        (
+            config.active_context.service_user is None,
+            config.active_context.service_pass is None,
+            config.active_context.root_user is None,
+        )
+    ):
+        raise GenericCLIError(
+            'Service user credentials or root user not set in active context'
+        )
 
     with data.get_context_for_service_user() as context:
         try:
             user = context.get_user_account_by_username(
-                str(config.active_context.root_user))
+                str(config.active_context.root_user)
+            )
         except UnknownUserAccountError as exc:
-            raise GenericCLIException(
-                f'Unknown root user: "{config.active_context.root_user}"') \
-                from exc
+            raise GenericCLIError(
+                f'Unknown root user: "{config.active_context.root_user}"'
+            ) from exc
 
     if user:
         with data.get_context(user=user) as context:
@@ -70,7 +75,8 @@ def retrieve() -> None:
                     user.fullname,
                     user.username,
                     str(user.role),
-                    'Yes' if user.second_factor else 'No')
+                    'Yes' if user.second_factor else 'No',
+                )
             console.print(table)
 
 
@@ -94,38 +100,42 @@ def set_password(username: str) -> None:
     data = get_my_data_object_for_context()
 
     user = None
-    if any((
-        config.active_context.service_user is None,
-        config.active_context.service_pass is None,
-        config.active_context.root_user is None,
-    )):
-        raise GenericCLIException(
-            'Service user credentials or root user not set in active context')
+    if any(
+        (
+            config.active_context.service_user is None,
+            config.active_context.service_pass is None,
+            config.active_context.root_user is None,
+        )
+    ):
+        raise GenericCLIError(
+            'Service user credentials or root user not set in active context'
+        )
 
     with data.get_context_for_service_user() as context:
         try:
             user = context.get_user_account_by_username(
-                str(config.active_context.root_user))
+                str(config.active_context.root_user)
+            )
         except UnknownUserAccountError as exc:
-            raise GenericCLIException(
-                f'Unknown root user: "{config.active_context.root_user}"') \
-                from exc
+            raise GenericCLIError(
+                f'Unknown root user: "{config.active_context.root_user}"'
+            ) from exc
 
     if user:
         new_password = getpass.getpass('Password: ')
         if len(new_password) == 0:
-            raise GenericCLIException('Password too short')
+            raise GenericCLIError('Password too short')
 
         new_password_repeat = getpass.getpass('Repeat: ')
         if new_password != new_password_repeat:
-            raise GenericCLIException('Passwords do not match')
+            raise GenericCLIError('Passwords do not match')
 
         with data.get_context(user=user) as context:
             users_accounts = context.users.retrieve(
-                User.username ==  # type:ignore
-                username)
+                User.username  # type:ignore
+                == username
+            )
             if len(users_accounts) != 1:
-                raise GenericCLIException(
-                    f'User "{username}" not found.')
+                raise GenericCLIError(f'User "{username}" not found.')
             users_accounts[0].set_password(new_password)
             context.users.update(users_accounts)

@@ -10,9 +10,9 @@ appropiate for the work you have to do.
 import typer
 
 from .config import ContextModel
-from .exceptions import GenericCLIException
+from .exceptions import GenericCLIError
 from .globals import config
-from .style import get_table, ConsoleFactory
+from .style import ConsoleFactory, get_table
 
 app = typer.Typer(no_args_is_help=True)
 
@@ -44,9 +44,8 @@ def create(
     """
     console = ConsoleFactory.get_console()
     contexts = config.contexts
-    if name in contexts.keys():
-        raise GenericCLIException(
-            f'Context with name "{name}" already exists')
+    if name in contexts:
+        raise GenericCLIError(f'Context with name "{name}" already exists')
     config.config.contexts.append(
         ContextModel(
             name=name,
@@ -54,7 +53,9 @@ def create(
             warning=warning,
             service_user=service_user,
             service_pass=service_pass,
-            root_user=root_user))
+            root_user=root_user,
+        )
+    )
     config.save()
     console.print(f'Context with name "{name}" is created')
 
@@ -82,23 +83,27 @@ def retrieve() -> None:
             if config.config.active_context == name:
                 active = '*'
             warning = '*' if context.warning else ''
-        table.add_row(active, f'{name}',
-                      context.db_string_with_masked_pwd,
-                      warning,
-                      context.service_user,
-                      context.root_user)
+        table.add_row(
+            active,
+            f'{name}',
+            context.db_string_with_masked_pwd,
+            warning,
+            context.service_user,
+            context.root_user,
+        )
     console.print(table)
 
 
 @app.command(name='set')
-def update(name: str,
-           new_name: str | None = None,
-           db_string: str | None = None,
-           warning: bool | None = None,
-           service_user: str | None = None,
-           service_pass: str | None = None,
-           root_user: str | None = None,
-           ) -> None:
+def update(
+    name: str,
+    new_name: str | None = None,
+    db_string: str | None = None,
+    warning: bool | None = None,
+    service_user: str | None = None,
+    service_pass: str | None = None,
+    root_user: str | None = None,
+) -> None:
     """Update a configured context.
 
     Updates a configured context.
@@ -139,8 +144,7 @@ def update(name: str,
         config.save()
         console.print(f'Context with name "{name}" is updated')
         return
-    raise GenericCLIException(
-        f'Context with name "{name}" does not exist')
+    raise GenericCLIError(f'Context with name "{name}" does not exist')
 
 
 @app.command(name='delete')
@@ -157,19 +161,18 @@ def delete(name: str) -> None:
             user tries to remove the context that is active.
     """
     if config.config.active_context == name:
-        raise GenericCLIException('Cannot remove active context')
+        raise GenericCLIError('Cannot remove active context')
 
     console = ConsoleFactory.get_console()
     contexts = config.contexts
     if contexts.get(name):
-        config.config.contexts = list(filter(
-            lambda x: x.name != name,
-            config.config.contexts))
+        config.config.contexts = list(
+            filter(lambda x: x.name != name, config.config.contexts)
+        )
         config.save()
         console.print(f'Context with name "{name}" is deleted')
         return
-    raise GenericCLIException(
-        f'Context with name "{name}" does not exist')
+    raise GenericCLIError(f'Context with name "{name}" does not exist')
 
 
 @app.command(name='use')
@@ -186,9 +189,9 @@ def use(context: str) -> None:
     """
     console = ConsoleFactory.get_console()
     contexts = config.contexts
-    if context in contexts.keys() and config.config:
+    if context in contexts and config.config:
         config.config.active_context = context
         config.save()
         console.print(f'Now using "{context}"')
         return
-    raise GenericCLIException(f'Context "{context}" is not configured.')
+    raise GenericCLIError(f'Context "{context}" is not configured.')

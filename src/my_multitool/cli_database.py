@@ -2,6 +2,7 @@
 
 Exposes the `database` commands for the CLI app.
 """
+
 from logging import getLogger
 
 import typer
@@ -9,8 +10,11 @@ from my_data.data_loader import DataLoader, JSONDataSource
 from my_data.my_data_table_creator import MyDataTableCreator
 from sqlalchemy.exc import IntegrityError
 
-from my_multitool.exceptions import (GenericCLIException, SQLError,
-                                     NoConfirmationException)
+from my_multitool.exceptions import (
+    GenericCLIError,
+    NoConfirmationError,
+    SQLError,
+)
 
 from .globals import config, get_my_data_object_for_context
 from .style import ConsoleFactory
@@ -19,8 +23,7 @@ app = typer.Typer(no_args_is_help=True)
 
 
 @app.command(name='create')
-def create(echo_sql: bool = False,
-           drop_tables: bool = False) -> None:
+def create(echo_sql: bool = False, drop_tables: bool = False) -> None:
     """Create the database schema.
 
     Creates the database schema for the currently activated context.
@@ -42,15 +45,17 @@ def create(echo_sql: bool = False,
     if config.active_context.warning:
         logger.warning('Context mandates a warning for this action')
         confirm = console.input(
-            '[yellow]' +
-            f'You are working on context "{config.active_context.name}". ' +
-            'This action can be fatal. Continue? [ Y/n ] [/yellow]')
+            '[yellow]'
+            + f'You are working on context "{config.active_context.name}". '
+            + 'This action can be fatal. Continue? [ Y/n ] [/yellow]'
+        )
         if confirm.lower().strip() != 'y' and confirm.strip() != '':
-            raise NoConfirmationException
+            raise NoConfirmationError
 
     logger.debug('Creating MyData object')
     data = get_my_data_object_for_context(
-        context_name=None, db_args={'echo': echo_sql})
+        context_name=None, db_args={'echo': echo_sql}
+    )
 
     if drop_tables:
         logger.warning('All current data in the database will be lost!')
@@ -79,19 +84,19 @@ def import_json(filename: str, echo_sql: bool = False) -> None:
 
     logger.debug('Creating MyData object')
     data = get_my_data_object_for_context(
-        context_name=None, db_args={'echo': echo_sql})
+        context_name=None, db_args={'echo': echo_sql}
+    )
     data.create_engine()
 
     loader = DataLoader(
-        my_data_object=data,
-        data_source=JSONDataSource(filename))
+        my_data_object=data, data_source=JSONDataSource(filename)
+    )
     logger.info('Importing data from file "%s"', filename)
 
     try:
         loader.load()
     except FileNotFoundError as exception:
-        raise GenericCLIException(
-            f'File not found: {filename}') from exception
+        raise GenericCLIError(f'File not found: {filename}') from exception
     except IntegrityError as exception:
         raise SQLError(','.join(exception.args)) from exception
     console.print('Imported data')

@@ -3,6 +3,7 @@
 This module contains the `main()` method that exposes the CLI arguments for the
 script. The CLI argument groups are imported from other modules.
 """
+
 import logging
 import sys
 
@@ -20,9 +21,13 @@ from . import __version__ as my_multitool_version
 from .cli_config import app as config_app
 from .cli_database import app as database_app
 from .cli_users import app as users_app
-from .exceptions import (ConfigFileNotFoundException,
-                         ConfigFileNotValidException, GenericCLIException,
-                         NoConfirmationException, SQLError)
+from .exceptions import (
+    ConfigFileNotFoundError,
+    ConfigFileNotValidError,
+    GenericCLIError,
+    NoConfirmationError,
+    SQLError,
+)
 from .globals import config
 from .style import ConsoleFactory, get_table, print_error
 
@@ -73,29 +78,30 @@ def main() -> int:  # pragma: no cover
     config.configure('~/.my_multitool_config.yaml')
     try:
         config.load()
-    except ConfigFileNotFoundException:
+    except ConfigFileNotFoundError:
         config.set_default_config()
         config.save()
-    except ConfigFileNotValidException:
+    except ConfigFileNotValidError:
         print_error('Configurationfile not valid', prefix='Configuration')
         sys.exit(1)
 
     # Configure logging
     logging.basicConfig(
         level=config.config.logging_level,
-        format="%(message)s",
-        datefmt="[%X]",
-        handlers=[RichHandler()])
+        format='%(message)s',
+        datefmt='[%X]',
+        handlers=[RichHandler()],
+    )
     logger = logging.getLogger('MAIN')
     logger.debug('Logging is configured!')
 
     # Run the Typer app
     try:
         app()
-    except NoConfirmationException as exception:
+    except NoConfirmationError as exception:
         print_error(str(exception), prefix='CLI error')
         return 1
-    except GenericCLIException as exception:
+    except GenericCLIError as exception:
         print_error(str(exception), prefix='CLI error')
         return 2
     except SQLError as exception:
