@@ -8,7 +8,7 @@ import sys
 
 import typer
 from my_data import __version__ as my_data_version
-from my_data.exceptions import MyDataException
+from my_data.exceptions import MyDataError
 from my_model import __version__ as my_model_version
 from pydantic import __version__ as pydantic_version
 from rich.logging import RichHandler
@@ -101,7 +101,7 @@ def main() -> int:  # pragma: no cover
     except SQLError as exception:
         print_error(str(exception), prefix='SQL error')
         return 4
-    except MyDataException as exception:
+    except MyDataError as exception:
         print_error(str(exception), prefix='MyData error')
         return 8
     return 0

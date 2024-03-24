@@ -6,12 +6,12 @@ import getpass
 from logging import getLogger
 
 import typer
-from my_data.exceptions import UnknownUserAccountException
+from my_data.exceptions import UnknownUserAccountError
 from my_model import User
 
 from .exceptions import GenericCLIException
 from .globals import config, get_my_data_object_for_context
-from .style import get_table, ConsoleFactory
+from .style import ConsoleFactory, get_table
 
 app = typer.Typer(no_args_is_help=True)
 
@@ -49,7 +49,7 @@ def retrieve() -> None:
         try:
             user = context.get_user_account_by_username(
                 str(config.active_context.root_user))
-        except UnknownUserAccountException as exc:
+        except UnknownUserAccountError as exc:
             raise GenericCLIException(
                 f'Unknown root user: "{config.active_context.root_user}"') \
                 from exc
@@ -106,7 +106,7 @@ def set_password(username: str) -> None:
         try:
             user = context.get_user_account_by_username(
                 str(config.active_context.root_user))
-        except UnknownUserAccountException as exc:
+        except UnknownUserAccountError as exc:
             raise GenericCLIException(
                 f'Unknown root user: "{config.active_context.root_user}"') \
                 from exc
