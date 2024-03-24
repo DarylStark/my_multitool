@@ -7,6 +7,8 @@ Within the CLI, you can configure these contexts and active the one that is
 appropiate for the work you have to do.
 """
 
+from typing import Optional
+
 import typer
 
 from .config import ContextModel
@@ -22,9 +24,9 @@ def create(
     name: str,
     db_string: str,
     warning: bool = False,
-    service_user: str | None = None,
-    service_pass: str | None = None,
-    root_user: str | None = None,
+    service_user: Optional[str] = None,
+    service_pass: Optional[str] = None,
+    root_user: Optional[str] = None,
 ) -> None:
     """Create a context.
 
@@ -97,12 +99,12 @@ def retrieve() -> None:
 @app.command(name='set')
 def update(
     name: str,
-    new_name: str | None = None,
-    db_string: str | None = None,
-    warning: bool | None = None,
-    service_user: str | None = None,
-    service_pass: str | None = None,
-    root_user: str | None = None,
+    new_name: Optional[str] = None,
+    db_string: Optional[str] = None,
+    warning: Optional[bool] = None,
+    service_user: Optional[str] = None,
+    service_pass: Optional[str] = None,
+    root_user: Optional[str] = None,
 ) -> None:
     """Update a configured context.
 
