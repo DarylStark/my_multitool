@@ -21,7 +21,7 @@ def retrieve() -> None:
     """List users in the database.
 
     Lists all users in the database. It needs a Service Account and a Root
-    account in order to do this. The service account should contain a password,`
+    account in order to do this. The service account should contain a password,
     the root account doesn't need this since the service account can just
     retrieve it.
 
