@@ -6,12 +6,12 @@ import getpass
 from logging import getLogger
 
 import typer
-from my_data.exceptions import UnknownUserAccountException
+from my_data.exceptions import UnknownUserAccountError
 from my_model import User
 
 from .exceptions import GenericCLIException
 from .globals import config, get_my_data_object_for_context
-from .style import get_table, ConsoleFactory
+from .style import ConsoleFactory, get_table
 
 app = typer.Typer(no_args_is_help=True)
 
@@ -21,7 +21,7 @@ def retrieve() -> None:
     """List users in the database.
 
     Lists all users in the database. It needs a Service Account and a Root
-    account in order to do this. The service account should contain a password,
+    account in order to do this. The service account should contain a password,`
     the root account doesn't need this since the service account can just
     retrieve it.
 
@@ -49,7 +49,7 @@ def retrieve() -> None:
         try:
             user = context.get_user_account_by_username(
                 str(config.active_context.root_user))
-        except UnknownUserAccountException as exc:
+        except UnknownUserAccountError as exc:
             raise GenericCLIException(
                 f'Unknown root user: "{config.active_context.root_user}"') \
                 from exc
@@ -106,7 +106,7 @@ def set_password(username: str) -> None:
         try:
             user = context.get_user_account_by_username(
                 str(config.active_context.root_user))
-        except UnknownUserAccountException as exc:
+        except UnknownUserAccountError as exc:
             raise GenericCLIException(
                 f'Unknown root user: "{config.active_context.root_user}"') \
                 from exc
