@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.abspath('../../src/'))
 project = 'My Multitool'
 copyright = '2023, Daryl Stark'
 author = 'Daryl Stark'
-release = '1.0.5'
+release = '1.0.6-dev'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
