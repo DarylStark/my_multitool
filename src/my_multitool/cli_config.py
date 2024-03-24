@@ -1,4 +1,5 @@
 """The `config` portion of the app."""
+
 import logging
 
 import typer

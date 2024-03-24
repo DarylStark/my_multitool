@@ -4,9 +4,9 @@ This module contains all the global styles for the application to give it a
 consistent look.
 """
 
-from rich.table import Table
 from rich import box
 from rich.console import Console
+from rich.table import Table
 
 
 class ConsoleFactory:

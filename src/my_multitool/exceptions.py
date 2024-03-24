@@ -4,29 +4,29 @@ Module that contains all the exceptions for the My Multitool tool.
 """
 
 
-class MyMultitoolException(Exception):
+class MyMultitoolError(Exception):
     """Base exception for My Multutool."""
 
 
-class ConfigFileNotFoundException(MyMultitoolException):
+class ConfigFileNotFoundError(MyMultitoolError):
     """Exception for when the configfile doesn't exist."""
 
 
-class ConfigFileNotValidException(MyMultitoolException):
+class ConfigFileNotValidError(MyMultitoolError):
     """Exception for when the configfile is invalid."""
 
 
-class NoConfigToSaveException(MyMultitoolException):
+class NoConfigToSaveError(MyMultitoolError):
     """Exception for a config is saved before loading it."""
 
 
-class GenericCLIException(MyMultitoolException):
+class GenericCLIError(MyMultitoolError):
     """Exception for a generic error in the CLI options."""
 
 
-class NoConfirmationException(MyMultitoolException):
+class NoConfirmationError(MyMultitoolError):
     """Exception when the user presses N at a confirmation."""
 
 
-class SQLError(MyMultitoolException):
+class SQLError(MyMultitoolError):
     """Exception for a SQL error."""

@@ -2,6 +2,7 @@
 
 Contains moduls for the My Multitool application.
 """
+
 from enum import Enum
 
 
@@ -32,6 +33,10 @@ class LoggingLevel(str, Enum):
             value for the `info` value.
         """
         levels = {
-            'debug': 10, 'info': 20, 'warning': 30, 'error': 40, 'fatal': 50
+            'debug': 10,
+            'info': 20,
+            'warning': 30,
+            'error': 40,
+            'fatal': 50,
         }
         return levels.get(self.value, 10)

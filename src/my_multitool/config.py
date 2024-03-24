@@ -10,7 +10,7 @@ from os.path import expanduser
 import yaml
 from pydantic import BaseModel, ConfigDict
 
-from .exceptions import (ConfigFileNotFoundException, NoConfigToSaveException)
+from .exceptions import ConfigFileNotFoundError, NoConfigToSaveError
 
 
 class ContextModel(BaseModel):
@@ -48,9 +48,9 @@ class ContextModel(BaseModel):
         Returns:
             The DB string without the password.
         """
-        return re.sub(r'//(\S+):(\S+)@',
-                      lambda x: f'//{x.group(1)}:***@',
-                      self.db_string)
+        return re.sub(
+            r'//(\S+):(\S+)@', lambda x: f'//{x.group(1)}:***@', self.db_string
+        )
 
 
 class ConfigModel(BaseModel):
@@ -111,13 +111,13 @@ class ConfigManager:
                 found or not entered.
         """
         if not self.yaml_file:
-            raise ConfigFileNotFoundException
+            raise ConfigFileNotFoundError
 
         try:
-            with open(self.yaml_file, 'r', encoding='utf-8') as input_file:
+            with open(self.yaml_file, encoding='utf-8') as input_file:
                 content = yaml.safe_load(input_file)
         except FileNotFoundError as exc:
-            raise ConfigFileNotFoundException from exc
+            raise ConfigFileNotFoundError from exc
 
         # Create a ConfigModel of it
         self.config = ConfigModel(**content)
@@ -134,7 +134,7 @@ class ConfigManager:
             with open(self.yaml_file, 'w', encoding='utf-8') as output_file:
                 yaml.dump(self.config.model_dump(), output_file)
         else:
-            raise NoConfigToSaveException('Configuration not set yet')
+            raise NoConfigToSaveError('Configuration not set yet')
 
     def set_default_config(self) -> None:
         """Set default config.
@@ -142,9 +142,12 @@ class ConfigManager:
         Method to set the default config for the object. This can be used as a
         default for when there is no config.
         """
-        self.config = ConfigModel(active_context='default', contexts=[
-            ContextModel(name='default', db_string='sqlite:///:memory:')
-        ])
+        self.config = ConfigModel(
+            active_context='default',
+            contexts=[
+                ContextModel(name='default', db_string='sqlite:///:memory:')
+            ],
+        )
 
     @property
     def contexts(self) -> dict[str, ContextModel]:
@@ -158,9 +161,7 @@ class ConfigManager:
             value the ContextModel instance for the context or, if the config
             is not set; None.
         """
-        return {
-            context.name: context for context in self.config.contexts
-        }
+        return {context.name: context for context in self.config.contexts}
 
     @property
     def full_config(self) -> ConfigModel:

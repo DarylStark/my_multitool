@@ -1,12 +1,12 @@
 """Configuration for PyTest."""
+
 # pylint: disable=redefined-outer-name
 import os
 
 import pytest
+from my_data.data_loader import DataLoader, JSONDataSource
 from my_data.my_data import MyData
 from my_data.my_data_table_creator import MyDataTableCreator
-from my_data.data_loader import DataLoader, JSONDataSource
-
 from my_multitool.config import ConfigManager, ContextModel
 from my_multitool.globals import config, get_my_data_object_for_context
 
@@ -35,28 +35,40 @@ def config_object(tmp_path_factory: pytest.TempPathFactory) -> ConfigManager:
     config.set_default_config()
     config.contexts['default'].service_user = 'service.user'
     config.contexts['default'].service_pass = 'service_password'
-    config.full_config.contexts.extend([
-        ContextModel(name='context_01',
-                     db_string='sqlite:///:memory:/',
-                     service_user='service.user',
-                     service_pass='service_password'),
-        ContextModel(name='context_02',
-                     db_string='sqlite:///:memory:/',
-                     warning=True,
-                     service_user='service.user',
-                     service_pass='service_password'),
-        ContextModel(name='context_03',
-                     db_string='sqlite:///:memory:/',
-                     service_user='service.user',
-                     service_pass='service_password'),
-        ContextModel(name='context_04',
-                     db_string='sqlite:///:memory:/',
-                     service_user='service.user',
-                     service_pass='service_password'),
-        ContextModel(name='context_05',
-                     db_string='sqlite:///:memory:/',
-                     service_user='service.user',
-                     service_pass='service_password')]
+    config.full_config.contexts.extend(
+        [
+            ContextModel(
+                name='context_01',
+                db_string='sqlite:///:memory:/',
+                service_user='service.user',
+                service_pass='service_password',
+            ),
+            ContextModel(
+                name='context_02',
+                db_string='sqlite:///:memory:/',
+                warning=True,
+                service_user='service.user',
+                service_pass='service_password',
+            ),
+            ContextModel(
+                name='context_03',
+                db_string='sqlite:///:memory:/',
+                service_user='service.user',
+                service_pass='service_password',
+            ),
+            ContextModel(
+                name='context_04',
+                db_string='sqlite:///:memory:/',
+                service_user='service.user',
+                service_pass='service_password',
+            ),
+            ContextModel(
+                name='context_05',
+                db_string='sqlite:///:memory:/',
+                service_user='service.user',
+                service_pass='service_password',
+            ),
+        ]
     )
     config.save()
     return config
@@ -64,7 +76,7 @@ def config_object(tmp_path_factory: pytest.TempPathFactory) -> ConfigManager:
 
 @pytest.fixture
 def data_object(
-    config_object: ConfigManager  # pylint: disable=unused-argument
+    config_object: ConfigManager,  # pylint: disable=unused-argument
 ) -> MyData:
     """Fixture for a global data object.
 
@@ -80,8 +92,7 @@ def data_object(
 
 
 @pytest.fixture
-def data_object_with_tables(
-        data_object: MyData) -> MyData:
+def data_object_with_tables(data_object: MyData) -> MyData:
     """Fixture for a global data object with tables.
 
     Args:
@@ -96,8 +107,7 @@ def data_object_with_tables(
 
 
 @pytest.fixture
-def data_object_with_database(
-        data_object_with_tables: MyData) -> MyData:
+def data_object_with_database(data_object_with_tables: MyData) -> MyData:
     """Fixture for a global data object with a configured database.
 
     Args:
@@ -109,8 +119,8 @@ def data_object_with_database(
     # Create testdata
     loader = DataLoader(
         my_data_object=data_object_with_tables,
-        data_source=JSONDataSource(
-            test_filename()))
+        data_source=JSONDataSource(test_filename()),
+    )
     loader.load()
 
     return data_object_with_tables
@@ -118,7 +128,8 @@ def data_object_with_database(
 
 @pytest.fixture
 def data_object_with_database_with_svc_user(
-        data_object_with_database: MyData) -> MyData:
+    data_object_with_database: MyData,
+) -> MyData:
     """Fixture for a data object with a configured database and a svc user.
 
     Args:
@@ -134,7 +145,8 @@ def data_object_with_database_with_svc_user(
 
 @pytest.fixture
 def data_object_with_database_with_root_user(  # pylint: disable=W0621
-        data_object_with_database_with_svc_user: MyData) -> MyData:
+    data_object_with_database_with_svc_user: MyData,
+) -> MyData:
     """Fixture for a data object with a configured database.
 
     Args:
@@ -150,7 +162,8 @@ def data_object_with_database_with_root_user(  # pylint: disable=W0621
 
 @pytest.fixture
 def data_object_with_database_with_wrong_root_user(
-        data_object_with_database_with_svc_user: MyData) -> MyData:
+    data_object_with_database_with_svc_user: MyData,
+) -> MyData:
     """Fixture for a global data object with a configured database.
 
     Args:
