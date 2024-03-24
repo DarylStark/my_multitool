@@ -95,7 +95,7 @@ def test_database_import_json(
         monkeypatch: a monkeypatch fixture.
     """
 
-    def replacement_data(*args: list[Any], **kwargs: dict[Any, Any]) -> str:
+    def replacement_data(*args: list[Any], **kwargs: dict[Any, Any]) -> MyData:
         return data_object_with_tables
 
     monkeypatch.setattr(
@@ -120,7 +120,7 @@ def test_database_import_json_wrong_filename(
         monkeypatch: a monkeypatch fixture.
     """
 
-    def replacement_data(*args: list[Any], **kwargs: dict[Any, Any]) -> str:
+    def replacement_data(*args: list[Any], **kwargs: dict[Any, Any]) -> MyData:
         return data_object_with_tables
 
     monkeypatch.setattr(
@@ -142,7 +142,7 @@ def test_database_import_json_integrity_error(
         monkeypatch: a monkeypatch fixture.
     """
 
-    def replacement_data(*args: list[Any], **kwargs: dict[Any, Any]) -> str:
+    def replacement_data(*args: list[Any], **kwargs: dict[Any, Any]) -> MyData:
         return data_object_with_database
 
     monkeypatch.setattr(
